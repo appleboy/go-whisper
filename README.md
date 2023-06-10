@@ -21,7 +21,7 @@ See the [Available models][2].
 | large-v1   | 2.9 GB  | ~4.7 GB   | b1caaf735c4cc1429223d5a74f0f4d0b9b59a299     |
 | large      | 2.9 GB  | ~4.7 GB   | 0f4c8e34f21cf1a914c59d8b3ce882345ad349d6     |
 
-For more information see [ggml/whisper][3].
+For more information see [ggerganov/whisper.cpp][3].
 
 [2]: https://huggingface.co/ggerganov/whisper.cpp/tree/main
 [3]: https://github.com/ggerganov/whisper.cpp/tree/master/models
