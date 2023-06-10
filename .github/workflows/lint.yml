@@ -38,6 +38,7 @@ jobs:
 
       - name: testing
         run: |
+          make whisper
           make test
 
       - name: Upload coverage to Codecov
