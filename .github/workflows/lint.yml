@@ -34,7 +34,7 @@ jobs:
 
       - name: setup sshd server
         run: |
-          apk add make
+          apk add make git
 
       - name: testing
         run: |
