@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/appleboy/go-whisper/config"
+
 	"github.com/davecgh/go-spew/spew"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/mattn/go-isatty"

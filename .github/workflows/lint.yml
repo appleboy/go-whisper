@@ -15,7 +15,7 @@ jobs:
       - name: setup tool
         run: |
           apk add make git gcc g++
-          make whisper
+          make dependency
 
       - name: Setup golangci-lint
         uses: golangci/golangci-lint-action@v3
@@ -41,7 +41,7 @@ jobs:
 
       - name: testing
         run: |
-          make whisper
+          make dependency
           make test
 
       - name: Upload coverage to Codecov

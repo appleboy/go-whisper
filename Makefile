@@ -44,7 +44,7 @@ all: build
 clone:
 	@[ -d third_party/whisper.cpp ] || git clone https://github.com/ggerganov/whisper.cpp.git third_party/whisper.cpp
 
-whisper: clone
+dependency: clone
 	@echo Build whisper
 	@make -C third_party/whisper.cpp libwhisper.a
 

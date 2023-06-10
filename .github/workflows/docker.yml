@@ -13,24 +13,11 @@ on:
 jobs:
   build-docker:
     runs-on: ubuntu-latest
-    container: golang:1.20-alpine
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: setup tool
-        run: |
-          apk add make git gcc g++
-          make whisper
-          make build
-
-      - name: Build binary
-        run : |
-          make build_linux_amd64
-          make build_linux_arm
-          make build_linux_arm64
 
       -
         name: Set up QEMU
