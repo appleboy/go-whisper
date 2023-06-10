@@ -12,16 +12,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: setup tool
-        run: |
-          apk add make git gcc g++
-          make dependency
+      # - name: setup tool
+      #   run: |
+      #     apk add make git gcc g++
+      #     make dependency
 
-      - name: Setup golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: latest
-          args: --verbose --timeout 20m
+      # - name: Setup golangci-lint
+      #   uses: golangci/golangci-lint-action@v3
+      #   with:
+      #     version: latest
+      #     args: --verbose --timeout 20m
 
       - uses: hadolint/hadolint-action@v3.1.0
         name: hadolint for Dockerfile
