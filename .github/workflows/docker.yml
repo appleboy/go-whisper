@@ -13,15 +13,17 @@ on:
 jobs:
   build-docker:
     runs-on: ubuntu-latest
+    container: golang:1.20-alpine
     steps:
-      - name: Setup go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '^1'
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: setup tool
+        run: |
+          apk add make git gcc g++
+          make whisper
 
       - name: Build binary
         run : |
