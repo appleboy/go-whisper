@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"runtime"
 	"strconv"
 	"time"
 
@@ -42,7 +43,7 @@ func main() {
 	}
 
 	app := cli.NewApp()
-	app.Name = "Transcript Using Whisper API"
+	app.Name = "Speech-to-Text Using Whisper API"
 	app.Usage = "Speech-to-Text."
 	app.Copyright = "Copyright (c) " + strconv.Itoa(time.Now().Year()) + " Bo-Yi Wu"
 	app.Authors = []*cli.Author{
@@ -56,7 +57,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
 			Name:    "model",
-			Usage:   "model name",
+			Usage:   "Model is the interface to a whisper model",
 			EnvVars: []string{"PLUGIN_MODEL", "INPUT_MODEL"},
 		},
 		&cli.StringFlag{
@@ -71,9 +72,15 @@ func main() {
 		},
 		&cli.StringFlag{
 			Name:    "language",
-			Usage:   "language",
+			Usage:   "Set the language to use for speech recognition",
 			EnvVars: []string{"PLUGIN_LANGUAGE", "INPUT_LANGUAGE"},
 			Value:   "auto",
+		},
+		&cli.UintFlag{
+			Name:    "threads",
+			Usage:   "Set number of threads to use",
+			EnvVars: []string{"PLUGIN_THREADS", "INPUT_THREADS"},
+			Value:   uint(runtime.NumCPU()),
 		},
 		&cli.BoolFlag{
 			Name:    "debug",
@@ -100,6 +107,7 @@ func run(c *cli.Context) error {
 			OutputPath: c.String("output-path"),
 			Debug:      c.Bool("debug"),
 			Language:   c.String("language"),
+			Threads:    c.Uint("threads"),
 		},
 	}
 

@@ -87,6 +87,8 @@ func Transcript(cfg *Config) (string, error) {
 		return "", err
 	}
 
+	context.SetThreads(cfg.Whisper.Threads)
+
 	l.Info().Msgf("%s", context.SystemInfo())
 
 	if cfg.Whisper.Language != "" {
