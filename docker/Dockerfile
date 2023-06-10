@@ -15,11 +15,6 @@ LABEL org.opencontainers.image.licenses=MIT
 RUN apk update && apk add --no-cache curl && \
   rm -rf /var/cache/apk/*
 
-RUN curl -LJO https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin \
-  --output /models/ggml-base.bin && \
-  curl -LJO https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large.bin \
-  --output /models/ggml-large.bin
-
 COPY release/${TARGETOS}/${TARGETARCH}/go-whisper /bin/
 
 WORKDIR /app
