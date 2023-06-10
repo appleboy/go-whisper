@@ -90,7 +90,7 @@ func Transcript(cfg *Config) (string, error) {
 	l.Info().Msgf("%s", context.SystemInfo())
 
 	if cfg.Whisper.Language != "" {
-		context.SetLanguage(cfg.Whisper.Language)
+		_ = context.SetLanguage(cfg.Whisper.Language)
 	}
 
 	l.Debug().Msg("start transcribe process")
