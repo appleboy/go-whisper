@@ -96,6 +96,7 @@ func Transcript(cfg *Config) (string, error) {
 	}
 
 	l.Debug().Msg("start transcribe process")
+	context.ResetTimings()
 	if err := context.Process(data, nil); err != nil {
 		return "", err
 	}
@@ -113,6 +114,12 @@ func Transcript(cfg *Config) (string, error) {
 			segment.End.Truncate(time.Millisecond),
 			segment.Text,
 		)
+	}
+
+	if cfg.Whisper.OutputPath != "" {
+		if err := os.WriteFile(cfg.Whisper.OutputPath, []byte(text), 0o644); err != nil {
+			return text, err
+		}
 	}
 
 	return text, nil
