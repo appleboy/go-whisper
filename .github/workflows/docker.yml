@@ -24,6 +24,7 @@ jobs:
         run: |
           apk add make git gcc g++
           make whisper
+          make build
 
       - name: Build binary
         run : |
