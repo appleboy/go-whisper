@@ -21,3 +21,6 @@
 go.work
 bin
 models
+third_party/whisper.cpp
+.env
+samples

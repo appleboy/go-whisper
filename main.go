@@ -98,6 +98,7 @@ func run(c *cli.Context) error {
 			AudioPath:  c.String("audio-path"),
 			OutputPath: c.String("output-path"),
 			Debug:      c.Bool("debug"),
+			Language:   c.String("language"),
 		},
 	}
 
@@ -105,5 +106,7 @@ func run(c *cli.Context) error {
 		spew.Dump(cfg)
 	}
 
-	return nil
+	_, err := Transcript(cfg)
+
+	return err
 }
