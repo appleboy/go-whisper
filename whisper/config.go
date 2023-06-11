@@ -2,14 +2,27 @@ package whisper
 
 import "fmt"
 
+type OutputFormat string
+
+func (f OutputFormat) String() string {
+	return string(f)
+}
+
+var (
+	FormatSrt OutputFormat = "srt"
+	FormatTxt OutputFormat = "txt"
+)
+
 // Config is the whisper config.
 type Config struct {
-	Model      string
-	AudioPath  string
-	OutputPath string
-	Threads    uint
-	Language   string
-	Debug      bool
+	Model     string
+	AudioPath string
+	Threads   uint
+	Language  string
+	Debug     bool
+
+	OutputPath   string
+	OutputFormat string
 }
 
 // Validate validates the config.

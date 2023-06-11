@@ -91,20 +91,44 @@ func (e *Engine) Transcript() error {
 
 // Save saves the speech result to file.
 func (e *Engine) Save() error {
-	log.Debug().Msg("start save to file process")
+	log.Debug().
+		Str("output-path", e.cfg.OutputPath).
+		Str("output-format", e.cfg.OutputFormat).
+		Msg("start save to file process")
 	text := ""
-	for {
-		segment, err := e.ctx.NextSegment()
-		if err != nil {
-			break
+	switch OutputFormat(e.cfg.OutputFormat) {
+	case FormatSrt:
+		n := 1
+		for {
+			segment, err := e.ctx.NextSegment()
+			if err != nil {
+				break
+			}
+			text += fmt.Sprintf("%d\n", n)
+			text += fmt.Sprintf("%s --> %s\n", srtTimestamp(segment.Start), srtTimestamp(segment.End))
+			text += segment.Text + "\n\n"
+			n++
+			log.Info().Msgf(
+				"[%6s -> %6s] %s",
+				segment.Start.Truncate(time.Millisecond),
+				segment.End.Truncate(time.Millisecond),
+				segment.Text,
+			)
 		}
-		text += segment.Text
-		log.Info().Msgf(
-			"[%6s -> %6s] %s",
-			segment.Start.Truncate(time.Millisecond),
-			segment.End.Truncate(time.Millisecond),
-			segment.Text,
-		)
+	case FormatTxt:
+		for {
+			segment, err := e.ctx.NextSegment()
+			if err != nil {
+				break
+			}
+			text += segment.Text
+			log.Info().Msgf(
+				"[%6s -> %6s] %s",
+				segment.Start.Truncate(time.Millisecond),
+				segment.End.Truncate(time.Millisecond),
+				segment.Text,
+			)
+		}
 	}
 
 	if e.cfg.OutputPath != "" {

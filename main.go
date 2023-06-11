@@ -71,6 +71,12 @@ func main() {
 			EnvVars: []string{"PLUGIN_OUTPUT_PATH", "INPUT_OUTPUT_PATH"},
 		},
 		&cli.StringFlag{
+			Name:    "output-format",
+			Usage:   "output format, support srt, txt",
+			EnvVars: []string{"PLUGIN_OUTPUT_FORMAT", "INPUT_OUTPUT_FORMAT"},
+			Value:   whisper.FormatTxt.String(),
+		},
+		&cli.StringFlag{
 			Name:    "language",
 			Usage:   "Set the language to use for speech recognition",
 			EnvVars: []string{"PLUGIN_LANGUAGE", "INPUT_LANGUAGE"},
@@ -101,12 +107,13 @@ func run(c *cli.Context) error {
 	}
 
 	cfg := &whisper.Config{
-		Model:      c.String("model"),
-		AudioPath:  c.String("audio-path"),
-		OutputPath: c.String("output-path"),
-		Debug:      c.Bool("debug"),
-		Language:   c.String("language"),
-		Threads:    c.Uint("threads"),
+		Model:        c.String("model"),
+		AudioPath:    c.String("audio-path"),
+		OutputPath:   c.String("output-path"),
+		OutputFormat: c.String("output-format"),
+		Debug:        c.Bool("debug"),
+		Language:     c.String("language"),
+		Threads:      c.Uint("threads"),
 	}
 
 	if cfg.Debug {
@@ -121,6 +128,7 @@ func run(c *cli.Context) error {
 	if err := e.Transcript(); err != nil {
 		return err
 	}
+	defer e.Close()
 
 	return e.Save()
 }
