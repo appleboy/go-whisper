@@ -18,6 +18,23 @@ type Config struct {
 	Whisper *config.Whisper
 }
 
+// Validate validates the config.
+func (c *Config) Validate() error {
+	if c.Whisper == nil {
+		return fmt.Errorf("whisper config is required")
+	}
+
+	if c.Whisper.AudioPath == "" {
+		return fmt.Errorf("audio path is required")
+	}
+
+	if c.Whisper.Model == "" {
+		return fmt.Errorf("model is required")
+	}
+
+	return nil
+}
+
 func sh(c string) (string, error) {
 	cmd := exec.Command("/bin/sh", "-c", c)
 	cmd.Env = os.Environ()

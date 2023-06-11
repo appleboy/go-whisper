@@ -115,6 +115,10 @@ func run(c *cli.Context) error {
 		spew.Dump(cfg)
 	}
 
+	if err := cfg.Validate(); err != nil {
+		return err
+	}
+
 	_, err := Transcript(cfg)
 
 	return err
