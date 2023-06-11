@@ -84,3 +84,17 @@ whisper_init_state: kv cross size =   52.73 MB
 whisper_full_with_state: auto-detected language: en (p = 0.967331)
 1:46AM INF [    0s ->    11s] And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country. module=transcript
 ```
+
+command line arguments:
+
+| Flag                 | Description                                                 | Environment Variables            |
+|----------------------|-------------------------------------------------------------|----------------------------------|
+| --model value        | Interface to a whisper model                                | $PLUGIN_MODEL, $INPUT_MODEL      |
+| --audio-path value   | Audio path                                                  | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH |
+| --output-path value  | Output path                                                 | $PLUGIN_OUTPUT_PATH, $INPUT_OUTPUT_PATH |
+| --output-format value| Output format, supports `srt`, `txt` (default: "txt")      | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT |
+| --language value     | Set the language for speech recognition (default: "auto")  | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE |
+| --threads value      | Set number of threads to use (default: number of cpu counts)| $PLUGIN_THREADS, $INPUT_THREADS |
+| --debug              | Enable debug mode (default: false)                          | $PLUGIN_DEBUG, $INPUT_DEBUG      |
+| --help, -h           | Show help                                                   |                                  |
+| --version, -v        | Print the version                                           |                                  |
