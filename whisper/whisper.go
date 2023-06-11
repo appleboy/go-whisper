@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
@@ -89,6 +90,21 @@ func (e *Engine) Transcript() error {
 	return e.ctx.Process(data, nil)
 }
 
+// getOutputPath function determines the output path for the engine's output.
+// If a specific output path is provided, it uses that path. Otherwise,
+// it derives the output path by removing the file extension from the AudioPath
+// and appending the specified OutputFormat.
+func (e *Engine) getOutputPath() string {
+	if e.cfg.OutputPath != "" {
+		return e.cfg.OutputPath
+	}
+
+	ext := filepath.Ext(e.cfg.AudioPath)
+	base := strings.TrimSuffix(e.cfg.AudioPath, ext)
+
+	return base + "." + e.cfg.OutputFormat
+}
+
 // Save saves the speech result to file.
 func (e *Engine) Save() error {
 	log.Debug().
@@ -131,10 +147,8 @@ func (e *Engine) Save() error {
 		}
 	}
 
-	if e.cfg.OutputPath != "" {
-		if err := os.WriteFile(e.cfg.OutputPath, []byte(text), 0o644); err != nil {
-			return err
-		}
+	if err := os.WriteFile(e.getOutputPath(), []byte(text), 0o644); err != nil {
+		return err
 	}
 
 	return nil

@@ -25,3 +25,4 @@ third_party/whisper.cpp
 .env
 dist
 testdata/jfk.txt
+testdata/jfk.srt
