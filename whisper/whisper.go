@@ -107,8 +107,9 @@ func (e *Engine) getOutputPath() string {
 
 // Save saves the speech result to file.
 func (e *Engine) Save() error {
+	outputPath := e.getOutputPath()
 	log.Debug().
-		Str("output-path", e.cfg.OutputPath).
+		Str("output-path", outputPath).
 		Str("output-format", e.cfg.OutputFormat).
 		Msg("start save to file process")
 	text := ""
