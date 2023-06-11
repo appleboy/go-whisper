@@ -24,8 +24,9 @@ func New(cfg *Config) (*Engine, error) {
 
 // Engine is the whisper engine.
 type Engine struct {
-	cfg *Config
-	ctx whisper.Context
+	cfg   *Config
+	ctx   whisper.Context
+	model whisper.Model
 }
 
 // Transcribe converts audio to text.
@@ -54,11 +55,10 @@ func (e *Engine) Transcript() error {
 	defer fh.Close()
 
 	// Load the model
-	model, err := whisper.New(e.cfg.Model)
+	e.model, err = whisper.New(e.cfg.Model)
 	if err != nil {
 		return err
 	}
-	defer model.Close()
 
 	// Decode the WAV file - load the full buffer
 	dec := wav.NewDecoder(fh)
@@ -72,7 +72,7 @@ func (e *Engine) Transcript() error {
 		data = buf.AsFloat32Buffer().Data
 	}
 
-	e.ctx, err = model.NewContext()
+	e.ctx, err = e.model.NewContext()
 	if err != nil {
 		return err
 	}
@@ -89,8 +89,9 @@ func (e *Engine) Transcript() error {
 	return e.ctx.Process(data, nil)
 }
 
+// Save saves the speech result to file.
 func (e *Engine) Save() error {
-	log.Debug().Msg("start save process")
+	log.Debug().Msg("start save to file process")
 	text := ""
 	for {
 		segment, err := e.ctx.NextSegment()
@@ -113,4 +114,13 @@ func (e *Engine) Save() error {
 	}
 
 	return nil
+}
+
+// Close closes the engine.
+func (e *Engine) Close() error {
+	if e.ctx == nil {
+		return nil
+	}
+
+	return e.model.Close()
 }

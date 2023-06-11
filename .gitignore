@@ -24,3 +24,4 @@ models/*.bin
 third_party/whisper.cpp
 .env
 dist
+testdata/jfk.txt
