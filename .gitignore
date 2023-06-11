@@ -23,4 +23,4 @@ bin
 models/*.bin
 third_party/whisper.cpp
 .env
-samples
+dist
