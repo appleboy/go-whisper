@@ -37,7 +37,14 @@ curl -LJ https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bi
 
 ## Usage
 
-Please make sure you have `testdata` directory with `jfk.wav` file. You can execute the following command to transcript the audio file.
+Please follow these simplified instructions to transcribe the audio file using a Docker container:
+
+1. Ensure that you have a `testdata` directory containing the `jfk.wav` file.
+2. Mount both the `models` and `testdata` directories to the Docker container.
+3. Specify the model using the `--model` flag and the audio file path using the `--audio-path` flag.
+4. The transcript result file will be saved in the same directory as the audio file.
+
+To transcribe the audio file, execute the command provided below.
 
 ```sh
 docker run \
