@@ -118,7 +118,9 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	_, err = e.Transcript()
+	if err := e.Transcript(); err != nil {
+		return err
+	}
 
-	return err
+	return e.Save()
 }
