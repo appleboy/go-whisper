@@ -29,4 +29,4 @@ WORKDIR /app
 
 COPY --from=SOURCE /bin/go-whisper /bin/go-whisper
 
-CMD ["/bin/go-whisper"]
+CMD ["/bin/sh"]
