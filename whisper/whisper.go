@@ -3,7 +3,6 @@ package whisper
 import (
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -12,51 +11,24 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// New for creating a new whisper engine.
+func New(cfg *Config) (*Engine, error) {
+	if err := cfg.Validate(); err != nil {
+		return nil, err
+	}
+
+	return &Engine{
+		cfg: cfg,
+	}, nil
+}
+
+// Engine is the whisper engine.
 type Engine struct {
 	cfg *Config
 }
 
-type Config struct {
-	Model      string
-	AudioPath  string
-	OutputPath string
-	Threads    uint
-	Language   string
-	Debug      bool
-}
-
-// Validate validates the config.
-func (c *Config) Validate() error {
-	if c.AudioPath == "" {
-		return fmt.Errorf("audio path is required")
-	}
-
-	if c.Model == "" {
-		return fmt.Errorf("model is required")
-	}
-
-	return nil
-}
-
-func sh(c string) (string, error) {
-	cmd := exec.Command("/bin/sh", "-c", c)
-	cmd.Env = os.Environ()
-	o, err := cmd.CombinedOutput()
-	return string(o), err
-}
-
-// AudioToWav converts audio to wav for transcribe.
-func audioToWav(src, dst string) error {
-	out, err := sh(fmt.Sprintf("ffmpeg -i %s -format s16le -ar 16000 -ac 1 -acodec pcm_s16le %s", src, dst))
-	if err != nil {
-		return fmt.Errorf("error: %w out: %s", err, out)
-	}
-
-	return nil
-}
-
 // Transcribe converts audio to text.
-func Transcript(cfg *Config) (string, error) {
+func (e *Engine) Transcript() (string, error) {
 	var data []float32
 
 	l := log.With().
@@ -72,7 +44,7 @@ func Transcript(cfg *Config) (string, error) {
 	convertedPath := filepath.Join(dir, "converted.wav")
 
 	l.Debug().Msg("start convert audio to wav")
-	if err := audioToWav(cfg.AudioPath, convertedPath); err != nil {
+	if err := audioToWav(e.cfg.AudioPath, convertedPath); err != nil {
 		return "", err
 	}
 
@@ -84,7 +56,7 @@ func Transcript(cfg *Config) (string, error) {
 	defer fh.Close()
 
 	// Load the model
-	model, err := whisper.New(cfg.Model)
+	model, err := whisper.New(e.cfg.Model)
 	if err != nil {
 		return "", err
 	}
@@ -107,12 +79,12 @@ func Transcript(cfg *Config) (string, error) {
 		return "", err
 	}
 
-	context.SetThreads(cfg.Threads)
+	context.SetThreads(e.cfg.Threads)
 
 	l.Info().Msgf("%s", context.SystemInfo())
 
-	if cfg.Language != "" {
-		_ = context.SetLanguage(cfg.Language)
+	if e.cfg.Language != "" {
+		_ = context.SetLanguage(e.cfg.Language)
 	}
 
 	l.Debug().Msg("start transcribe process")
@@ -136,8 +108,8 @@ func Transcript(cfg *Config) (string, error) {
 		)
 	}
 
-	if cfg.OutputPath != "" {
-		if err := os.WriteFile(cfg.OutputPath, []byte(text), 0o644); err != nil {
+	if e.cfg.OutputPath != "" {
+		if err := os.WriteFile(e.cfg.OutputPath, []byte(text), 0o644); err != nil {
 			return text, err
 		}
 	}

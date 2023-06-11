@@ -113,11 +113,12 @@ func run(c *cli.Context) error {
 		spew.Dump(cfg)
 	}
 
-	if err := cfg.Validate(); err != nil {
+	e, err := whisper.New(cfg)
+	if err != nil {
 		return err
 	}
 
-	_, err := whisper.Transcript(cfg)
+	_, err = e.Transcript()
 
 	return err
 }
