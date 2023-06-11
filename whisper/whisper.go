@@ -1,4 +1,4 @@
-package main
+package whisper
 
 import (
 	"fmt"
@@ -7,28 +7,31 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/appleboy/go-whisper/config"
+	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
 	"github.com/rs/zerolog/log"
-
-	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 )
 
+type Engine struct {
+	cfg *Config
+}
+
 type Config struct {
-	Whisper *config.Whisper
+	Model      string
+	AudioPath  string
+	OutputPath string
+	Threads    uint
+	Language   string
+	Debug      bool
 }
 
 // Validate validates the config.
 func (c *Config) Validate() error {
-	if c.Whisper == nil {
-		return fmt.Errorf("whisper config is required")
-	}
-
-	if c.Whisper.AudioPath == "" {
+	if c.AudioPath == "" {
 		return fmt.Errorf("audio path is required")
 	}
 
-	if c.Whisper.Model == "" {
+	if c.Model == "" {
 		return fmt.Errorf("model is required")
 	}
 
@@ -69,7 +72,7 @@ func Transcript(cfg *Config) (string, error) {
 	convertedPath := filepath.Join(dir, "converted.wav")
 
 	l.Debug().Msg("start convert audio to wav")
-	if err := audioToWav(cfg.Whisper.AudioPath, convertedPath); err != nil {
+	if err := audioToWav(cfg.AudioPath, convertedPath); err != nil {
 		return "", err
 	}
 
@@ -81,7 +84,7 @@ func Transcript(cfg *Config) (string, error) {
 	defer fh.Close()
 
 	// Load the model
-	model, err := whisper.New(cfg.Whisper.Model)
+	model, err := whisper.New(cfg.Model)
 	if err != nil {
 		return "", err
 	}
@@ -104,12 +107,12 @@ func Transcript(cfg *Config) (string, error) {
 		return "", err
 	}
 
-	context.SetThreads(cfg.Whisper.Threads)
+	context.SetThreads(cfg.Threads)
 
 	l.Info().Msgf("%s", context.SystemInfo())
 
-	if cfg.Whisper.Language != "" {
-		_ = context.SetLanguage(cfg.Whisper.Language)
+	if cfg.Language != "" {
+		_ = context.SetLanguage(cfg.Language)
 	}
 
 	l.Debug().Msg("start transcribe process")
@@ -133,8 +136,8 @@ func Transcript(cfg *Config) (string, error) {
 		)
 	}
 
-	if cfg.Whisper.OutputPath != "" {
-		if err := os.WriteFile(cfg.Whisper.OutputPath, []byte(text), 0o644); err != nil {
+	if cfg.OutputPath != "" {
+		if err := os.WriteFile(cfg.OutputPath, []byte(text), 0o644); err != nil {
 			return text, err
 		}
 	}

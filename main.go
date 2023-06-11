@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/appleboy/go-whisper/config"
+	"github.com/appleboy/go-whisper/whisper"
 
 	"github.com/davecgh/go-spew/spew"
 	_ "github.com/joho/godotenv/autoload"
@@ -100,18 +100,16 @@ func run(c *cli.Context) error {
 		log.Logger = log.With().Caller().Logger()
 	}
 
-	cfg := &Config{
-		Whisper: &config.Whisper{
-			Model:      c.String("model"),
-			AudioPath:  c.String("audio-path"),
-			OutputPath: c.String("output-path"),
-			Debug:      c.Bool("debug"),
-			Language:   c.String("language"),
-			Threads:    c.Uint("threads"),
-		},
+	cfg := &whisper.Config{
+		Model:      c.String("model"),
+		AudioPath:  c.String("audio-path"),
+		OutputPath: c.String("output-path"),
+		Debug:      c.Bool("debug"),
+		Language:   c.String("language"),
+		Threads:    c.Uint("threads"),
 	}
 
-	if cfg.Whisper.Debug {
+	if cfg.Debug {
 		spew.Dump(cfg)
 	}
 
@@ -119,7 +117,7 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	_, err := Transcript(cfg)
+	_, err := whisper.Transcript(cfg)
 
 	return err
 }
