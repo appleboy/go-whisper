@@ -87,14 +87,16 @@ whisper_full_with_state: auto-detected language: en (p = 0.967331)
 
 command line arguments:
 
-| Flag                 | Description                                                 | Environment Variables            |
-|----------------------|-------------------------------------------------------------|----------------------------------|
-| --model value        | Interface to a whisper model                                | $PLUGIN_MODEL, $INPUT_MODEL      |
-| --audio-path value   | Audio path                                                  | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH |
-| --output-path value  | Output path                                                 | $PLUGIN_OUTPUT_PATH, $INPUT_OUTPUT_PATH |
-| --output-format value| Output format, supports `srt`, `txt` (default: "txt")      | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT |
-| --language value     | Set the language for speech recognition (default: "auto")  | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE |
-| --threads value      | Set number of threads to use (default: number of cpu counts)| $PLUGIN_THREADS, $INPUT_THREADS |
-| --debug              | Enable debug mode (default: false)                          | $PLUGIN_DEBUG, $INPUT_DEBUG      |
-| --help, -h           | Show help                                                   |                                  |
-| --version, -v        | Print the version                                           |                                  |
+| Option                                          | Description                                                                 | Global Variable                           |
+|-------------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------|
+| --model value                                   | Model is the interface to a whisper model                                    | $PLUGIN_MODEL, $INPUT_MODEL               |
+| --audio-path value                              | audio path                                                                  | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH     |
+| --output-folder value                           | output folder                                                               | $PLUGIN_OUTPUT_FOLDER, $INPUT_OUTPUT_FOLDER|
+| --output-format value [ --output-format value ] | output format, support txt, srt, csv (default: "txt")                        | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT|
+| --language value                                | Set the language to use for speech recognition (default: "auto")            | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE         |
+| --threads value                                 | Set number of threads to use (default: 10)                                   | $PLUGIN_THREADS, $INPUT_THREADS           |
+| --debug                                         | enable debug mode (default: false)                                           | $PLUGIN_DEBUG, $INPUT_DEBUG               |
+| --speedup                                       | speed up audio by x2 (reduced accuracy) (default: false)                     | $PLUGIN_SPEEDUP, $INPUT_SPEEDUP           |
+| --translate                                     | translate from source language to english (default: false)                   | $PLUGIN_TRANSLATE, $INPUT_TRANSLATE       |
+| --help, -h                                      | show help                                                                   |                                           |
+| --version, -v                                   | print the version                                                           |                                           |

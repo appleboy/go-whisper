@@ -72,7 +72,7 @@ func main() {
 		},
 		&cli.StringSliceFlag{
 			Name:    "output-format",
-			Usage:   "output format, support txt, srt",
+			Usage:   "output format, support txt, srt, csv",
 			EnvVars: []string{"PLUGIN_OUTPUT_FORMAT", "INPUT_OUTPUT_FORMAT"},
 			Value:   cli.NewStringSlice("txt"),
 		},
