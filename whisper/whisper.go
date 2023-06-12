@@ -108,18 +108,23 @@ func (e *Engine) Transcript() error {
 	return nil
 }
 
-// getOutputPath function determines the output path for the engine's output.
-// If a specific output path is provided, it uses that path. Otherwise,
-// it derives the output path by removing the file extension from the AudioPath
-// and appending the specified OutputFormat.
+// getOutputPath is a method of the Engine struct that takes a format string as input.
+// It returns the output path for the converted audio file based on the given format.
 func (e *Engine) getOutputPath(format string) string {
+	// Get the file extension of the audio file from the configuration.
 	ext := filepath.Ext(e.cfg.AudioPath)
+	// Get the base name of the audio file from the configuration.
 	filename := filepath.Base(e.cfg.AudioPath)
+	// Get the directory path of the audio file from the configuration.
 	folder := filepath.Dir(e.cfg.AudioPath)
+	// If the OutputFolder field in the configuration is not empty,
+	// use it as the folder for the output file.
 	if e.cfg.OutputFolder != "" {
 		folder = e.cfg.OutputFolder
 	}
 
+	// Join the folder path, the base name of the audio file without its extension,
+	// and the new format to create the output path for the converted audio file.
 	return path.Join(folder, strings.TrimSuffix(filename, ext)+"."+format)
 }
 
