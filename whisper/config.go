@@ -9,8 +9,8 @@ func (f OutputFormat) String() string {
 }
 
 var (
-	FormatSrt OutputFormat = "srt"
 	FormatTxt OutputFormat = "txt"
+	FormatSrt OutputFormat = "srt"
 )
 
 // Config is the whisper config.
@@ -24,7 +24,7 @@ type Config struct {
 	Translate bool
 
 	OutputPath   string
-	OutputFormat string
+	OutputFormat []string
 }
 
 // Validate validates the config.

@@ -70,11 +70,11 @@ func main() {
 			Usage:   "output path",
 			EnvVars: []string{"PLUGIN_OUTPUT_PATH", "INPUT_OUTPUT_PATH"},
 		},
-		&cli.StringFlag{
+		&cli.StringSliceFlag{
 			Name:    "output-format",
-			Usage:   "output format, support srt, txt",
+			Usage:   "output format, support txt, srt",
 			EnvVars: []string{"PLUGIN_OUTPUT_FORMAT", "INPUT_OUTPUT_FORMAT"},
-			Value:   whisper.FormatTxt.String(),
+			Value:   cli.NewStringSlice("txt"),
 		},
 		&cli.StringFlag{
 			Name:    "language",
@@ -120,7 +120,7 @@ func run(c *cli.Context) error {
 		Model:        c.String("model"),
 		AudioPath:    c.String("audio-path"),
 		OutputPath:   c.String("output-path"),
-		OutputFormat: c.String("output-format"),
+		OutputFormat: c.StringSlice("output-format"),
 		Debug:        c.Bool("debug"),
 		Language:     c.String("language"),
 		Threads:      c.Uint("threads"),
@@ -142,5 +142,11 @@ func run(c *cli.Context) error {
 	}
 	defer e.Close()
 
-	return e.Save()
+	for _, ext := range cfg.OutputFormat {
+		if err := e.Save(ext); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

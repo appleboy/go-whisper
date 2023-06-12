@@ -90,14 +90,18 @@ func (e *Engine) Transcript() error {
 
 	log.Debug().Msg("start transcribe process")
 	e.ctx.ResetTimings()
-	return e.ctx.Process(data, nil)
+	if err := e.ctx.Process(data, nil); err != nil {
+		return err
+	}
+	e.ctx.PrintTimings()
+	return nil
 }
 
 // getOutputPath function determines the output path for the engine's output.
 // If a specific output path is provided, it uses that path. Otherwise,
 // it derives the output path by removing the file extension from the AudioPath
 // and appending the specified OutputFormat.
-func (e *Engine) getOutputPath() string {
+func (e *Engine) getOutputPath(format string) string {
 	if e.cfg.OutputPath != "" {
 		return e.cfg.OutputPath
 	}
@@ -105,19 +109,18 @@ func (e *Engine) getOutputPath() string {
 	ext := filepath.Ext(e.cfg.AudioPath)
 	base := strings.TrimSuffix(e.cfg.AudioPath, ext)
 
-	return base + "." + e.cfg.OutputFormat
+	return base + "." + format
 }
 
 // Save saves the speech result to file.
-func (e *Engine) Save() error {
-	outputPath := e.getOutputPath()
+func (e *Engine) Save(format string) error {
+	outputPath := e.getOutputPath(format)
 	log.Debug().
 		Str("output-path", outputPath).
-		Str("output-format", e.cfg.OutputFormat).
+		Str("output-format", format).
 		Msg("start save to file process")
-	e.ctx.PrintTimings()
 	text := ""
-	switch OutputFormat(e.cfg.OutputFormat) {
+	switch OutputFormat(format) {
 	case FormatSrt:
 		n := 1
 		for {
@@ -129,12 +132,6 @@ func (e *Engine) Save() error {
 			text += fmt.Sprintf("%s --> %s\n", srtTimestamp(segment.Start), srtTimestamp(segment.End))
 			text += segment.Text + "\n\n"
 			n++
-			log.Info().Msgf(
-				"[%6s -> %6s] %s",
-				segment.Start.Truncate(time.Millisecond),
-				segment.End.Truncate(time.Millisecond),
-				segment.Text,
-			)
 		}
 	case FormatTxt:
 		for {
@@ -143,16 +140,10 @@ func (e *Engine) Save() error {
 				break
 			}
 			text += segment.Text
-			log.Info().Msgf(
-				"[%6s -> %6s] %s",
-				segment.Start.Truncate(time.Millisecond),
-				segment.End.Truncate(time.Millisecond),
-				segment.Text,
-			)
 		}
 	}
 
-	if err := os.WriteFile(e.getOutputPath(), []byte(text), 0o644); err != nil {
+	if err := os.WriteFile(outputPath, []byte(text), 0o644); err != nil {
 		return err
 	}
 
