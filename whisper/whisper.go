@@ -138,7 +138,6 @@ func (e *Engine) Save(format string) error {
 	text := ""
 	switch OutputFormat(format) {
 	case FormatSrt:
-		log.Info().Msg("start srt format")
 		for i, segment := range e.segments {
 			text += fmt.Sprintf("%d\n", i+1)
 			text += fmt.Sprintf("%s --> %s\n", srtTimestamp(segment.Start), srtTimestamp(segment.End))
@@ -148,6 +147,11 @@ func (e *Engine) Save(format string) error {
 	case FormatTxt:
 		for _, segment := range e.segments {
 			text += segment.Text
+		}
+	case FormatCSV:
+		text = "start,end,text\n"
+		for _, segment := range e.segments {
+			text += fmt.Sprintf("%s,%s,\"%s\"\n", segment.Start, segment.End, segment.Text)
 		}
 	}
 

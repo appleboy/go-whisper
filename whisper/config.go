@@ -11,6 +11,7 @@ func (f OutputFormat) String() string {
 var (
 	FormatTxt OutputFormat = "txt"
 	FormatSrt OutputFormat = "srt"
+	FormatCSV OutputFormat = "csv"
 )
 
 // Config is the whisper config.
