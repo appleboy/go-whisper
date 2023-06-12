@@ -87,6 +87,7 @@ func (e *Engine) Transcript() error {
 	}
 
 	log.Debug().Msg("start transcribe process")
+	e.ctx.ResetTimings()
 	return e.ctx.Process(data, nil)
 }
 
@@ -112,6 +113,7 @@ func (e *Engine) Save() error {
 		Str("output-path", outputPath).
 		Str("output-format", e.cfg.OutputFormat).
 		Msg("start save to file process")
+	e.ctx.PrintTimings()
 	text := ""
 	switch OutputFormat(e.cfg.OutputFormat) {
 	case FormatSrt:
@@ -162,4 +164,14 @@ func (e *Engine) Close() error {
 	}
 
 	return e.model.Close()
+}
+
+func cb(segment whisper.Segment) {
+	log.Info().Msgf(
+		"[%6s -> %6s] %s",
+		segment.Start.Truncate(time.Millisecond),
+		segment.End.Truncate(time.Millisecond),
+		segment.Text,
+	)
+	return
 }
