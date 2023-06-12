@@ -93,6 +93,11 @@ func main() {
 			Usage:   "enable debug mode",
 			EnvVars: []string{"PLUGIN_DEBUG", "INPUT_DEBUG"},
 		},
+		&cli.BoolFlag{
+			Name:    "speedup",
+			Usage:   "speed up audio by x2 (reduced accuracy)",
+			EnvVars: []string{"PLUGIN_SPEEDUP", "INPUT_SPEEDUP"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -114,6 +119,7 @@ func run(c *cli.Context) error {
 		Debug:        c.Bool("debug"),
 		Language:     c.String("language"),
 		Threads:      c.Uint("threads"),
+		SpeedUp:      c.Bool("speedup"),
 	}
 
 	if cfg.Debug {

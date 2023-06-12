@@ -20,6 +20,7 @@ type Config struct {
 	Threads   uint
 	Language  string
 	Debug     bool
+	SpeedUp   bool
 
 	OutputPath   string
 	OutputFormat string
