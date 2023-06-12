@@ -98,6 +98,11 @@ func main() {
 			Usage:   "speed up audio by x2 (reduced accuracy)",
 			EnvVars: []string{"PLUGIN_SPEEDUP", "INPUT_SPEEDUP"},
 		},
+		&cli.BoolFlag{
+			Name:    "translate",
+			Usage:   "translate from source language to english",
+			EnvVars: []string{"PLUGIN_TRANSLATE", "INPUT_TRANSLATE"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -120,6 +125,7 @@ func run(c *cli.Context) error {
 		Language:     c.String("language"),
 		Threads:      c.Uint("threads"),
 		SpeedUp:      c.Bool("speedup"),
+		Translate:    c.Bool("translate"),
 	}
 
 	if cfg.Debug {

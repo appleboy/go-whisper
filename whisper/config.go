@@ -21,6 +21,7 @@ type Config struct {
 	Language  string
 	Debug     bool
 	SpeedUp   bool
+	Translate bool
 
 	OutputPath   string
 	OutputFormat string
