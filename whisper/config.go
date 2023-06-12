@@ -23,7 +23,7 @@ type Config struct {
 	SpeedUp   bool
 	Translate bool
 
-	OutputPath   string
+	OutputFolder string
 	OutputFormat []string
 }
 

@@ -66,9 +66,9 @@ func main() {
 			EnvVars: []string{"PLUGIN_AUDIO_PATH", "INPUT_AUDIO_PATH"},
 		},
 		&cli.StringFlag{
-			Name:    "output-path",
-			Usage:   "output path",
-			EnvVars: []string{"PLUGIN_OUTPUT_PATH", "INPUT_OUTPUT_PATH"},
+			Name:    "output-folder",
+			Usage:   "output folder",
+			EnvVars: []string{"PLUGIN_OUTPUT_FOLDER", "INPUT_OUTPUT_FOLDER"},
 		},
 		&cli.StringSliceFlag{
 			Name:    "output-format",
@@ -119,7 +119,7 @@ func run(c *cli.Context) error {
 	cfg := &whisper.Config{
 		Model:        c.String("model"),
 		AudioPath:    c.String("audio-path"),
-		OutputPath:   c.String("output-path"),
+		OutputFolder: c.String("output-folder"),
 		OutputFormat: c.StringSlice("output-format"),
 		Debug:        c.Bool("debug"),
 		Language:     c.String("language"),

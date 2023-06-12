@@ -3,6 +3,7 @@ package whisper
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -25,9 +26,10 @@ func New(cfg *Config) (*Engine, error) {
 
 // Engine is the whisper engine.
 type Engine struct {
-	cfg   *Config
-	ctx   whisper.Context
-	model whisper.Model
+	cfg      *Config
+	ctx      whisper.Context
+	model    whisper.Model
+	segments []whisper.Segment
 }
 
 // Transcribe converts audio to text.
@@ -94,6 +96,15 @@ func (e *Engine) Transcript() error {
 		return err
 	}
 	e.ctx.PrintTimings()
+
+	for {
+		segment, err := e.ctx.NextSegment()
+		if err != nil {
+			break
+		}
+		e.segments = append(e.segments, segment)
+	}
+
 	return nil
 }
 
@@ -102,43 +113,35 @@ func (e *Engine) Transcript() error {
 // it derives the output path by removing the file extension from the AudioPath
 // and appending the specified OutputFormat.
 func (e *Engine) getOutputPath(format string) string {
-	if e.cfg.OutputPath != "" {
-		return e.cfg.OutputPath
+	ext := filepath.Ext(e.cfg.AudioPath)
+	filename := filepath.Base(e.cfg.AudioPath)
+	folder := filepath.Dir(e.cfg.AudioPath)
+	if e.cfg.OutputFolder != "" {
+		folder = e.cfg.OutputFolder
 	}
 
-	ext := filepath.Ext(e.cfg.AudioPath)
-	base := strings.TrimSuffix(e.cfg.AudioPath, ext)
-
-	return base + "." + format
+	return path.Join(folder, strings.TrimSuffix(filename, ext)+"."+format)
 }
 
 // Save saves the speech result to file.
 func (e *Engine) Save(format string) error {
 	outputPath := e.getOutputPath(format)
-	log.Debug().
+	log.Info().
 		Str("output-path", outputPath).
 		Str("output-format", format).
-		Msg("start save to file process")
+		Msg("save text to file")
 	text := ""
 	switch OutputFormat(format) {
 	case FormatSrt:
-		n := 1
-		for {
-			segment, err := e.ctx.NextSegment()
-			if err != nil {
-				break
-			}
-			text += fmt.Sprintf("%d\n", n)
+		log.Info().Msg("start srt format")
+		for i, segment := range e.segments {
+			text += fmt.Sprintf("%d\n", i+1)
 			text += fmt.Sprintf("%s --> %s\n", srtTimestamp(segment.Start), srtTimestamp(segment.End))
 			text += segment.Text + "\n\n"
-			n++
+
 		}
 	case FormatTxt:
-		for {
-			segment, err := e.ctx.NextSegment()
-			if err != nil {
-				break
-			}
+		for _, segment := range e.segments {
 			text += segment.Text
 		}
 	}
