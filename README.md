@@ -1,6 +1,12 @@
 # go-whisper
 
-docker image for speech to text using [ggerganov/whisper.cpp][1]
+Docker Image for Speech-to-Text using [ggerganov/whisper.cpp][1].
+
+This Docker image provides a ready-to-use environment for converting speech to text using the ggerganov/whisper.cpp library. The whisper.cpp library is an open-source project that enables efficient and accurate speech recognition. By utilizing this Docker image, users can easily set up and run the speech-to-text conversion process without worrying about installing dependencies or configuring the system.
+
+The Docker image includes all necessary components and dependencies, ensuring a seamless experience for users who want to leverage the power of the whisper.cpp library for their speech recognition needs. Simply pull the Docker image, run the container, and start converting your audio files into text with minimal effort.
+
+In summary, this Docker image offers a convenient and efficient way to utilize the ggerganov/whisper.cpp library for speech-to-text conversion, making it an excellent choice for those looking to implement speech recognition in their projects.
 
 [1]:https://github.com/ggerganov/whisper.cpp
 
