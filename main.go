@@ -104,9 +104,9 @@ func main() {
 			EnvVars: []string{"PLUGIN_TRANSLATE", "INPUT_TRANSLATE"},
 		},
 		&cli.BoolFlag{
-			Name:    "set-print-progress",
-			Usage:   "set print progress",
-			EnvVars: []string{"PLUGIN_SET_PRINT_PROGRESS", "INPUT_SET_PRINT_PROGRESS"},
+			Name:    "print-progress",
+			Usage:   "print progress",
+			EnvVars: []string{"PLUGIN_PRINT_PROGRESS", "INPUT_PRINT_PROGRESS"},
 		},
 	}
 
@@ -132,7 +132,7 @@ func run(c *cli.Context) error {
 		SpeedUp:      c.Bool("speedup"),
 		Translate:    c.Bool("translate"),
 
-		SetPrintProgress: c.Bool("set-print-progress"),
+		PrintProgress: c.Bool("print-progress"),
 	}
 
 	if cfg.Debug {

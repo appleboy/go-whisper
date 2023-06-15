@@ -24,7 +24,7 @@ type Config struct {
 	SpeedUp   bool
 	Translate bool
 
-	SetPrintProgress bool
+	PrintProgress bool
 
 	OutputFolder string
 	OutputFormat []string

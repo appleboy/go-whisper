@@ -91,7 +91,7 @@ func (e *Engine) Transcript() error {
 	}
 
 	// Set the print progress flag to true if the user has specified it.
-	if e.cfg.SetPrintProgress {
+	if e.cfg.PrintProgress {
 		e.ctx.SetPrintProgress(true)
 	}
 
