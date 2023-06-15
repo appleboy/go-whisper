@@ -90,6 +90,11 @@ func (e *Engine) Transcript() error {
 		_ = e.ctx.SetLanguage(e.cfg.Language)
 	}
 
+	// Set the print progress flag to true if the user has specified it.
+	if e.cfg.SetPrintProgress {
+		e.ctx.SetPrintProgress(true)
+	}
+
 	log.Debug().Msg("start transcribe process")
 	e.ctx.ResetTimings()
 	if err := e.ctx.Process(data, nil); err != nil {
