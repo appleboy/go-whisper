@@ -97,7 +97,7 @@ func (e *Engine) Transcript() error {
 
 	log.Debug().Msg("start transcribe process")
 	e.ctx.ResetTimings()
-	if err := e.ctx.Process(data, nil); err != nil {
+	if err := e.ctx.Process(data, cb); err != nil {
 		return err
 	}
 	e.ctx.PrintTimings()
