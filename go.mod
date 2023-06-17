@@ -22,4 +22,4 @@ require (
 	golang.org/x/sys v0.8.0 // indirect
 )
 
-replace github.com/ggerganov/whisper.cpp/bindings/go => github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20230615133923-1e07513bbd46
+replace github.com/ggerganov/whisper.cpp/bindings/go => github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20230617020330-4d2f9dd8c28e

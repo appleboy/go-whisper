@@ -30,6 +30,7 @@ type Engine struct {
 	ctx      whisper.Context
 	model    whisper.Model
 	segments []whisper.Segment
+	progress int
 }
 
 // Transcribe converts audio to text.
@@ -90,14 +91,9 @@ func (e *Engine) Transcript() error {
 		_ = e.ctx.SetLanguage(e.cfg.Language)
 	}
 
-	// Set the print progress flag to true if the user has specified it.
-	if e.cfg.PrintProgress {
-		e.ctx.SetPrintProgress(true)
-	}
-
 	log.Debug().Msg("start transcribe process")
 	e.ctx.ResetTimings()
-	if err := e.ctx.Process(data, cb); err != nil {
+	if err := e.ctx.Process(data, cbSegment, e.cbProgress()); err != nil {
 		return err
 	}
 	e.ctx.PrintTimings()
@@ -111,6 +107,22 @@ func (e *Engine) Transcript() error {
 	}
 
 	return nil
+}
+
+// cbProgress is a method of the Engine struct that returns a function.
+// The function takes a progress int as input and returns nothing.
+// It sets the progress field of the Engine struct to the given progress int.
+// If the PrintProgress field in the configuration is true, it prints the progress.
+func (e *Engine) cbProgress() func(progress int) {
+	return func(progress int) {
+		if e.progress == progress {
+			return
+		}
+		e.progress = progress
+		if e.cfg.PrintProgress {
+			log.Info().Msgf("current progress: %d%%", progress)
+		}
+	}
 }
 
 // getOutputPath is a method of the Engine struct that takes a format string as input.
@@ -176,7 +188,7 @@ func (e *Engine) Close() error {
 	return e.model.Close()
 }
 
-func cb(segment whisper.Segment) {
+func cbSegment(segment whisper.Segment) {
 	log.Info().Msgf(
 		"[%6s -> %6s] %s",
 		segment.Start.Truncate(time.Millisecond),

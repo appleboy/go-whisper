@@ -107,6 +107,7 @@ func main() {
 			Name:    "print-progress",
 			Usage:   "print progress",
 			EnvVars: []string{"PLUGIN_PRINT_PROGRESS", "INPUT_PRINT_PROGRESS"},
+			Value:   true,
 		},
 	}
 
