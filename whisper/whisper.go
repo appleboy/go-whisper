@@ -93,20 +93,32 @@ func (e *Engine) Transcript() error {
 
 	log.Debug().Msg("start transcribe process")
 	e.ctx.ResetTimings()
-	if err := e.ctx.Process(data, cbSegment, e.cbProgress()); err != nil {
+	if err := e.ctx.Process(data, e.cbSegment(), e.cbProgress()); err != nil {
 		return err
 	}
 	e.ctx.PrintTimings()
 
-	for {
-		segment, err := e.ctx.NextSegment()
-		if err != nil {
-			break
-		}
-		e.segments = append(e.segments, segment)
-	}
-
 	return nil
+}
+
+// cbSegment is a method of the Engine struct that returns a function.
+// The function takes a segment whisper.Segment as input and returns nothing.
+// It appends the given segment to the segments field of the Engine struct.
+// If the PrintSegment field in the configuration is true, it prints the segment.
+// The segment is printed with the start and end time truncated to milliseconds.
+func (e *Engine) cbSegment() func(segment whisper.Segment) {
+	return func(segment whisper.Segment) {
+		e.segments = append(e.segments, segment)
+		if !e.cfg.PrintSegment {
+			return
+		}
+		log.Info().Msgf(
+			"[%6s -> %6s] %s",
+			segment.Start.Truncate(time.Millisecond),
+			segment.End.Truncate(time.Millisecond),
+			segment.Text,
+		)
+	}
 }
 
 // cbProgress is a method of the Engine struct that returns a function.
@@ -145,7 +157,9 @@ func (e *Engine) getOutputPath(format string) string {
 	return path.Join(folder, strings.TrimSuffix(filename, ext)+"."+format)
 }
 
-// Save saves the speech result to file.
+// Save saves the text to a file.
+// It takes a format string as input and returns an error.
+// It gets the output path for the converted audio file based on the given format.
 func (e *Engine) Save(format string) error {
 	outputPath := e.getOutputPath(format)
 	log.Info().
@@ -186,14 +200,4 @@ func (e *Engine) Close() error {
 	}
 
 	return e.model.Close()
-}
-
-func cbSegment(segment whisper.Segment) {
-	log.Info().Msgf(
-		"[%6s -> %6s] %s",
-		segment.Start.Truncate(time.Millisecond),
-		segment.End.Truncate(time.Millisecond),
-		segment.Text,
-	)
-	return
 }

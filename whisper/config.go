@@ -25,6 +25,7 @@ type Config struct {
 	Translate bool
 
 	PrintProgress bool
+	PrintSegment  bool
 
 	OutputFolder string
 	OutputFormat []string

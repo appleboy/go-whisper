@@ -109,6 +109,11 @@ func main() {
 			EnvVars: []string{"PLUGIN_PRINT_PROGRESS", "INPUT_PRINT_PROGRESS"},
 			Value:   true,
 		},
+		&cli.BoolFlag{
+			Name:    "print-segment",
+			Usage:   "print segment",
+			EnvVars: []string{"PLUGIN_PRINT_SEGMENT", "INPUT_PRINT_SEGMENT"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -134,6 +139,7 @@ func run(c *cli.Context) error {
 		Translate:    c.Bool("translate"),
 
 		PrintProgress: c.Bool("print-progress"),
+		PrintSegment:  c.Bool("print-segment"),
 	}
 
 	if cfg.Debug {
