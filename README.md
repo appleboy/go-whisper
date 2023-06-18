@@ -92,17 +92,18 @@ whisper_full_with_state: auto-detected language: en (p = 0.967331)
 ```
 
 command line arguments:
-
-| Option                                          | Description                                                                 | Global Variable                           |
-|-------------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------|
-| --model value                                   | Model is the interface to a whisper model                                    | $PLUGIN_MODEL, $INPUT_MODEL               |
-| --audio-path value                              | audio path                                                                  | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH     |
-| --output-folder value                           | output folder                                                               | $PLUGIN_OUTPUT_FOLDER, $INPUT_OUTPUT_FOLDER|
-| --output-format value [ --output-format value ] | output format, support txt, srt, csv (default: "txt")                        | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT|
-| --language value                                | Set the language to use for speech recognition (default: "auto")            | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE         |
-| --threads value                                 | Set number of threads to use (default: number of cpu counts)                                   | $PLUGIN_THREADS, $INPUT_THREADS           |
-| --debug                                         | enable debug mode (default: false)                                           | $PLUGIN_DEBUG, $INPUT_DEBUG               |
-| --speedup                                       | speed up audio by x2 (reduced accuracy) (default: false)                     | $PLUGIN_SPEEDUP, $INPUT_SPEEDUP           |
-| --translate                                     | translate from source language to english (default: false)                   | $PLUGIN_TRANSLATE, $INPUT_TRANSLATE       |
-| --help, -h                                      | show help                                                                   |                                           |
-| --version, -v                                   | print the version                                                           |                                           |
+| Option                          | Description                                                                 | Default Value | Environment Variables          |
+|---------------------------------|-----------------------------------------------------------------------------|---------------|--------------------------------|
+| --model value                   | Model is the interface to a whisper model                                   |               | $PLUGIN_MODEL, $INPUT_MODEL    |
+| --audio-path value              | audio path                                                                  |               | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH |
+| --output-folder value           | output folder                                                               |               | $PLUGIN_OUTPUT_FOLDER, $INPUT_OUTPUT_FOLDER |
+| --output-format value           | output format, support txt, srt, csv                                        | "txt"         | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT |
+| --language value                | Set the language to use for speech recognition                              | "auto"        | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE |
+| --threads value                 | Set number of threads to use                                                | cpu core counts             | $PLUGIN_THREADS, $INPUT_THREADS |
+| --debug                         | enable debug mode                                                           | false         | $PLUGIN_DEBUG, $INPUT_DEBUG    |
+| --speedup                       | speed up audio by x2 (reduced accuracy)                                     | false         | $PLUGIN_SPEEDUP, $INPUT_SPEEDUP |
+| --translate                     | translate from source language to english                                   | false         | $PLUGIN_TRANSLATE, $INPUT_TRANSLATE |
+| --print-progress                | print progress                                                              | true          | $PLUGIN_PRINT_PROGRESS, $INPUT_PRINT_PROGRESS |
+| --print-segment                 | print segment                                                               | false         | $PLUGIN_PRINT_SEGMENT, $INPUT_PRINT_SEGMENT |
+| --help, -h                      | show help                                                                   |               |                                |
+| --version, -v                   | print the version                                                           |               |                                |
