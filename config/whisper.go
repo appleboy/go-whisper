@@ -1,21 +1,9 @@
-package whisper
+package config
 
 import "fmt"
 
-type OutputFormat string
-
-func (f OutputFormat) String() string {
-	return string(f)
-}
-
-var (
-	FormatTxt OutputFormat = "txt"
-	FormatSrt OutputFormat = "srt"
-	FormatCSV OutputFormat = "csv"
-)
-
-// Config is the whisper config.
-type Config struct {
+// Whisper is the configuration for whisper.
+type Whisper struct {
 	Model     string
 	AudioPath string
 	Threads   uint
@@ -32,7 +20,7 @@ type Config struct {
 }
 
 // Validate validates the config.
-func (c *Config) Validate() error {
+func (c *Whisper) Validate() error {
 	if c.AudioPath == "" {
 		return fmt.Errorf("audio path is required")
 	}

@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/appleboy/go-whisper/config"
 	"github.com/appleboy/go-whisper/whisper"
 
 	"github.com/davecgh/go-spew/spew"
@@ -127,7 +128,7 @@ func run(c *cli.Context) error {
 		log.Logger = log.With().Caller().Logger()
 	}
 
-	cfg := &whisper.Config{
+	cfg := &config.Whisper{
 		Model:        c.String("model"),
 		AudioPath:    c.String("audio-path"),
 		OutputFolder: c.String("output-folder"),

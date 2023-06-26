@@ -3,12 +3,13 @@ package whisper
 import (
 	"testing"
 
+	"github.com/appleboy/go-whisper/config"
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 )
 
 func TestEngine_getOutputPath(t *testing.T) {
 	type fields struct {
-		cfg      *Config
+		cfg      *config.Whisper
 		ctx      whisper.Context
 		model    whisper.Model
 		segments []whisper.Segment
@@ -25,7 +26,7 @@ func TestEngine_getOutputPath(t *testing.T) {
 		{
 			name: "change wav to txt",
 			fields: fields{
-				cfg: &Config{
+				cfg: &config.Whisper{
 					AudioPath: "/test/1234/foo.wav",
 				},
 			},
@@ -37,7 +38,7 @@ func TestEngine_getOutputPath(t *testing.T) {
 		{
 			name: "change output folder",
 			fields: fields{
-				cfg: &Config{
+				cfg: &config.Whisper{
 					AudioPath:    "/test/1234/foo.wav",
 					OutputFolder: "/foo/bar",
 				},

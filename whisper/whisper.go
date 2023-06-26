@@ -8,13 +8,26 @@ import (
 	"strings"
 	"time"
 
+	"github.com/appleboy/go-whisper/config"
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
 	"github.com/rs/zerolog/log"
 )
 
+type OutputFormat string
+
+func (f OutputFormat) String() string {
+	return string(f)
+}
+
+var (
+	FormatTxt OutputFormat = "txt"
+	FormatSrt OutputFormat = "srt"
+	FormatCSV OutputFormat = "csv"
+)
+
 // New for creating a new whisper engine.
-func New(cfg *Config) (*Engine, error) {
+func New(cfg *config.Whisper) (*Engine, error) {
 	if err := cfg.Validate(); err != nil {
 		return nil, err
 	}
@@ -26,7 +39,7 @@ func New(cfg *Config) (*Engine, error) {
 
 // Engine is the whisper engine.
 type Engine struct {
-	cfg      *Config
+	cfg      *config.Whisper
 	ctx      whisper.Context
 	model    whisper.Model
 	segments []whisper.Segment
