@@ -76,6 +76,10 @@ func isFailureStatusCode(resp *http.Response) bool {
 }
 
 func NewClient(url string, insecure bool, headers map[string]string) *Client {
+	if url == "" {
+		return nil
+	}
+
 	client := http.DefaultClient
 	client.Timeout = 5 * time.Second
 

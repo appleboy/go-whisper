@@ -36,6 +36,7 @@ func (c *Whisper) Validate() error {
 type Webhook struct {
 	URL      string
 	Insecure bool
+	Headers  []string
 }
 
 // Setting is the configuration for whisper.

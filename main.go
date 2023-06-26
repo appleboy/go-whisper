@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/appleboy/go-whisper/config"
+	"github.com/appleboy/go-whisper/webhook"
 	"github.com/appleboy/go-whisper/whisper"
 
 	"github.com/davecgh/go-spew/spew"
@@ -125,6 +126,11 @@ func main() {
 			Usage:   "webhook insecure",
 			EnvVars: []string{"PLUGIN_WEBHOOK_INSECURE", "INPUT_WEBHOOK_INSECURE"},
 		},
+		&cli.StringSliceFlag{
+			Name:    "webhook-headers",
+			Usage:   "webhook headers",
+			EnvVars: []string{"PLUGIN_WEBHOOK_HEADERS", "INPUT_WEBHOOK_HEADERS"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -157,6 +163,7 @@ func run(c *cli.Context) error {
 		Webhook: config.Webhook{
 			URL:      c.String("webhook-url"),
 			Insecure: c.Bool("webhook-insecure"),
+			Headers:  c.StringSlice("webhook-headers"),
 		},
 	}
 
@@ -164,7 +171,14 @@ func run(c *cli.Context) error {
 		spew.Dump(cfg)
 	}
 
-	e, err := whisper.New(&cfg.Whisper)
+	e, err := whisper.New(
+		&cfg.Whisper,
+		webhook.NewClient(
+			cfg.Webhook.URL,
+			cfg.Webhook.Insecure,
+			webhook.ToHeaders(cfg.Webhook.Headers),
+		),
+	)
 	if err != nil {
 		return err
 	}

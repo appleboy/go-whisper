@@ -1,6 +1,7 @@
 package whisper
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -9,6 +10,8 @@ import (
 	"time"
 
 	"github.com/appleboy/go-whisper/config"
+	"github.com/appleboy/go-whisper/webhook"
+
 	"github.com/ggerganov/whisper.cpp/bindings/go/pkg/whisper"
 	"github.com/go-audio/wav"
 	"github.com/rs/zerolog/log"
@@ -26,20 +29,26 @@ var (
 	FormatCSV OutputFormat = "csv"
 )
 
+type request struct {
+	Progress int `json:"progress"`
+}
+
 // New for creating a new whisper engine.
-func New(cfg *config.Whisper) (*Engine, error) {
+func New(cfg *config.Whisper, webhook *webhook.Client) (*Engine, error) {
 	if err := cfg.Validate(); err != nil {
 		return nil, err
 	}
 
 	return &Engine{
-		cfg: cfg,
+		cfg:     cfg,
+		webhook: webhook,
 	}, nil
 }
 
 // Engine is the whisper engine.
 type Engine struct {
 	cfg      *config.Whisper
+	webhook  *webhook.Client
 	ctx      whisper.Context
 	model    whisper.Model
 	segments []whisper.Segment
@@ -146,6 +155,13 @@ func (e *Engine) cbProgress() func(progress int) {
 		e.progress = progress
 		if e.cfg.PrintProgress {
 			log.Info().Msgf("current progress: %d%%", progress)
+		}
+
+		// send webhook
+		if e.webhook != nil {
+			e.webhook.Send(context.Background(), &request{
+				Progress: progress,
+			})
 		}
 	}
 }
