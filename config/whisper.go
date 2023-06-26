@@ -31,3 +31,15 @@ func (c *Whisper) Validate() error {
 
 	return nil
 }
+
+// Webhook is the configuration for webhook.
+type Webhook struct {
+	URL      string
+	Insecure bool
+}
+
+// Setting is the configuration for whisper.
+type Setting struct {
+	Whisper Whisper
+	Webhook Webhook
+}

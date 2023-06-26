@@ -115,6 +115,16 @@ func main() {
 			Usage:   "print segment",
 			EnvVars: []string{"PLUGIN_PRINT_SEGMENT", "INPUT_PRINT_SEGMENT"},
 		},
+		&cli.StringFlag{
+			Name:    "webhook-url",
+			Usage:   "webhook url",
+			EnvVars: []string{"PLUGIN_WEBHOOK_URL", "INPUT_WEBHOOK_URL"},
+		},
+		&cli.BoolFlag{
+			Name:    "webhook-insecure",
+			Usage:   "webhook insecure",
+			EnvVars: []string{"PLUGIN_WEBHOOK_INSECURE", "INPUT_WEBHOOK_INSECURE"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -128,26 +138,33 @@ func run(c *cli.Context) error {
 		log.Logger = log.With().Caller().Logger()
 	}
 
-	cfg := &config.Whisper{
-		Model:        c.String("model"),
-		AudioPath:    c.String("audio-path"),
-		OutputFolder: c.String("output-folder"),
-		OutputFormat: c.StringSlice("output-format"),
-		Debug:        c.Bool("debug"),
-		Language:     c.String("language"),
-		Threads:      c.Uint("threads"),
-		SpeedUp:      c.Bool("speedup"),
-		Translate:    c.Bool("translate"),
+	cfg := config.Setting{
+		Whisper: config.Whisper{
+			Model:        c.String("model"),
+			AudioPath:    c.String("audio-path"),
+			OutputFolder: c.String("output-folder"),
+			OutputFormat: c.StringSlice("output-format"),
+			Debug:        c.Bool("debug"),
+			Language:     c.String("language"),
+			Threads:      c.Uint("threads"),
+			SpeedUp:      c.Bool("speedup"),
+			Translate:    c.Bool("translate"),
 
-		PrintProgress: c.Bool("print-progress"),
-		PrintSegment:  c.Bool("print-segment"),
+			PrintProgress: c.Bool("print-progress"),
+			PrintSegment:  c.Bool("print-segment"),
+		},
+
+		Webhook: config.Webhook{
+			URL:      c.String("webhook-url"),
+			Insecure: c.Bool("webhook-insecure"),
+		},
 	}
 
-	if cfg.Debug {
+	if cfg.Whisper.Debug {
 		spew.Dump(cfg)
 	}
 
-	e, err := whisper.New(cfg)
+	e, err := whisper.New(&cfg.Whisper)
 	if err != nil {
 		return err
 	}
@@ -157,7 +174,7 @@ func run(c *cli.Context) error {
 	}
 	defer e.Close()
 
-	for _, ext := range cfg.OutputFormat {
+	for _, ext := range cfg.Whisper.OutputFormat {
 		if err := e.Save(ext); err != nil {
 			return err
 		}
