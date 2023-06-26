@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -75,8 +76,17 @@ func isFailureStatusCode(resp *http.Response) bool {
 	return resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusBadRequest
 }
 
-func NewClient(url string, insecure bool, headers map[string]string) *Client {
-	if url == "" {
+func NewClient(s string, insecure bool, headers map[string]string) *Client {
+	if s == "" {
+		return nil
+	}
+
+	u, err := url.Parse(s)
+	if err != nil {
+		return nil
+	}
+
+	if u.Scheme != "http" && u.Scheme != "https" {
 		return nil
 	}
 
@@ -90,7 +100,7 @@ func NewClient(url string, insecure bool, headers map[string]string) *Client {
 	}
 
 	return &Client{
-		url:        url,
+		url:        s,
 		httpClient: client,
 		headers:    headers,
 	}
