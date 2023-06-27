@@ -38,9 +38,7 @@ func DownloadVideo(u string) (string, error) {
 		}).DialContext,
 	}
 
-	downloader := &ytdl.Downloader{
-		// OutputDir: folder,
-	}
+	downloader := &ytdl.Downloader{}
 	downloader.HTTPClient = &http.Client{Transport: httpTransport}
 
 	video, err := downloader.GetVideo(u)

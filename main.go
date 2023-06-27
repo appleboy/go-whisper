@@ -181,7 +181,6 @@ func run(c *cli.Context) error {
 	if c.String("youtube") != "" {
 		videoPath, err := youtube.DownloadVideo(c.String("youtube"))
 		if err != nil {
-			log.Error().Err(err).Msg("can't download youtube video")
 			return err
 		}
 		cfg.Whisper.AudioPath = videoPath
