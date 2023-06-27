@@ -14,7 +14,6 @@ import (
 
 	"github.com/kkdai/youtube/v2"
 	ytdl "github.com/kkdai/youtube/v2/downloader"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/net/http/httpproxy"
 )
 
@@ -87,6 +86,5 @@ func DownloadVideo(u string) (string, error) {
 		return "", err
 	}
 
-	log.Info().Msg("a")
 	return outputFile, nil
 }
