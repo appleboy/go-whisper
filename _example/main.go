@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,12 +14,29 @@ type Webhook struct {
 func main() {
 	router := gin.Default()
 
-	// Example for binding JSON ({"user": "manu", "password": "123"})
 	router.POST("/webhook", func(c *gin.Context) {
 		var json Webhook
 		if err := c.ShouldBindJSON(&json); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"progress": json.Progress})
+	})
+
+	router.POST("/webhook2", func(c *gin.Context) {
+		var json Webhook
+		if err := c.ShouldBindJSON(&json); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		if v, ok := c.Request.Header["X-Server-Token"]; ok {
+			log.Println("show server token: ", v)
+		}
+
+		if v, ok := c.Request.Header["X-Data-Uuid"]; ok {
+			log.Println("show data uuid: ", v)
 		}
 
 		c.JSON(http.StatusOK, gin.H{"progress": json.Progress})
