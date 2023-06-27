@@ -9,6 +9,7 @@ import (
 	"github.com/appleboy/go-whisper/config"
 	"github.com/appleboy/go-whisper/webhook"
 	"github.com/appleboy/go-whisper/whisper"
+	"github.com/appleboy/go-whisper/youtube"
 
 	"github.com/davecgh/go-spew/spew"
 	_ "github.com/joho/godotenv/autoload"
@@ -131,6 +132,11 @@ func main() {
 			Usage:   "webhook headers",
 			EnvVars: []string{"PLUGIN_WEBHOOK_HEADERS", "INPUT_WEBHOOK_HEADERS"},
 		},
+		&cli.StringFlag{
+			Name:    "youtube",
+			Usage:   "youtube url",
+			EnvVars: []string{"PLUGIN_YOUTUBE", "INPUT_YOUTUBE"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -169,6 +175,16 @@ func run(c *cli.Context) error {
 
 	if cfg.Whisper.Debug {
 		spew.Dump(cfg)
+	}
+
+	// check youtube url
+	if c.String("youtube") != "" {
+		videoPath, err := youtube.DownloadVideo(c.String("youtube"))
+		if err != nil {
+			log.Error().Err(err).Msg("can't download youtube video")
+			return err
+		}
+		cfg.Whisper.AudioPath = videoPath
 	}
 
 	e, err := whisper.New(
