@@ -15,8 +15,9 @@ type Whisper struct {
 	PrintProgress bool
 	PrintSegment  bool
 
-	OutputFolder string
-	OutputFormat []string
+	OutputFolder   string
+	OutputFilename string
+	OutputFormat   []string
 }
 
 // Validate validates the config.

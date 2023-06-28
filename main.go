@@ -80,6 +80,11 @@ func main() {
 			Value:   cli.NewStringSlice("txt"),
 		},
 		&cli.StringFlag{
+			Name:    "output-filename",
+			Usage:   "output filename",
+			EnvVars: []string{"PLUGIN_OUTPUT_FILENAME", "INPUT_OUTPUT_FILENAME"},
+		},
+		&cli.StringFlag{
 			Name:    "language",
 			Usage:   "Set the language to use for speech recognition",
 			EnvVars: []string{"PLUGIN_LANGUAGE", "INPUT_LANGUAGE"},
@@ -152,18 +157,20 @@ func run(c *cli.Context) error {
 
 	cfg := config.Setting{
 		Whisper: config.Whisper{
-			Model:        c.String("model"),
-			AudioPath:    c.String("audio-path"),
-			OutputFolder: c.String("output-folder"),
-			OutputFormat: c.StringSlice("output-format"),
-			Debug:        c.Bool("debug"),
-			Language:     c.String("language"),
-			Threads:      c.Uint("threads"),
-			SpeedUp:      c.Bool("speedup"),
-			Translate:    c.Bool("translate"),
-
+			Model:         c.String("model"),
+			AudioPath:     c.String("audio-path"),
+			Language:      c.String("language"),
+			Threads:       c.Uint("threads"),
+			SpeedUp:       c.Bool("speedup"),
+			Translate:     c.Bool("translate"),
 			PrintProgress: c.Bool("print-progress"),
 			PrintSegment:  c.Bool("print-segment"),
+
+			OutputFolder:   c.String("output-folder"),
+			OutputFormat:   c.StringSlice("output-format"),
+			OutputFilename: c.String("output-filename"),
+
+			Debug: c.Bool("debug"),
 		},
 
 		Webhook: config.Webhook{

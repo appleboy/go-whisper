@@ -173,6 +173,10 @@ func (e *Engine) getOutputPath(format string) string {
 	ext := filepath.Ext(e.cfg.AudioPath)
 	// Get the base name of the audio file from the configuration.
 	filename := filepath.Base(e.cfg.AudioPath)
+	// If the OutputFilename field in the configuration is not empty,
+	if e.cfg.OutputFilename != "" {
+		filename = e.cfg.OutputFilename
+	}
 	// Get the directory path of the audio file from the configuration.
 	folder := filepath.Dir(e.cfg.AudioPath)
 	// If the OutputFolder field in the configuration is not empty,
