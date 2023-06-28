@@ -46,8 +46,8 @@ func DownloadVideo(u string) (string, error) {
 		panic(err)
 	}
 
-	mimetype := "mp4"
-	outputQuality := "medium"
+	mimetype := "video/3gpp"
+	outputQuality := ""
 
 	formats := video.Formats
 	if mimetype != "" {
@@ -79,7 +79,7 @@ func DownloadVideo(u string) (string, error) {
 		format = &formats[0]
 	}
 
-	outputFile := path.Join(folder, "video.mp4")
+	outputFile := path.Join(folder, "video.3gp")
 	if err := downloader.Download(context.Background(), video, format, outputFile); err != nil {
 		return "", err
 	}
