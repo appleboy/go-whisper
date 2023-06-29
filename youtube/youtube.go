@@ -2,6 +2,7 @@ package youtube
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net"
@@ -12,12 +13,20 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/appleboy/go-whisper/config"
+
 	"github.com/kkdai/youtube/v2"
 	ytdl "github.com/kkdai/youtube/v2/downloader"
 	"golang.org/x/net/http/httpproxy"
 )
 
-func DownloadVideo(u string) (string, error) {
+// Engine is the youtube engine.
+type Engine struct {
+	cfg *config.Youtube
+}
+
+// Download downloads youtube video.
+func (e *Engine) Download(ctx context.Context) (string, error) {
 	folder, err := os.MkdirTemp("", "youtube")
 	if err != nil {
 		panic(err)
@@ -38,10 +47,16 @@ func DownloadVideo(u string) (string, error) {
 		}).DialContext,
 	}
 
+	if e.cfg.Insecure {
+		httpTransport.TLSClientConfig = &tls.Config{
+			InsecureSkipVerify: true,
+		}
+	}
+
 	downloader := &ytdl.Downloader{}
 	downloader.HTTPClient = &http.Client{Transport: httpTransport}
 
-	video, err := downloader.GetVideo(u)
+	video, err := downloader.GetVideo(e.cfg.URL)
 	if err != nil {
 		panic(err)
 	}
@@ -85,4 +100,11 @@ func DownloadVideo(u string) (string, error) {
 	}
 
 	return outputFile, nil
+}
+
+// New for creating a new youtube engine.
+func New(cfg *config.Youtube) (*Engine, error) {
+	return &Engine{
+		cfg: cfg,
+	}, nil
 }
