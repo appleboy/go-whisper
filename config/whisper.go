@@ -44,4 +44,11 @@ type Webhook struct {
 type Setting struct {
 	Whisper Whisper
 	Webhook Webhook
+	Youtube Youtube
+}
+
+// Youtube is the configuration for youtube.
+type Youtube struct {
+	URL      string
+	Insecure bool
 }

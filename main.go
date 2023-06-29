@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"os"
 	"runtime"
 	"strconv"
@@ -138,9 +139,14 @@ func main() {
 			EnvVars: []string{"PLUGIN_WEBHOOK_HEADERS", "INPUT_WEBHOOK_HEADERS"},
 		},
 		&cli.StringFlag{
-			Name:    "youtube",
+			Name:    "youtube-url",
 			Usage:   "youtube url",
-			EnvVars: []string{"PLUGIN_YOUTUBE", "INPUT_YOUTUBE"},
+			EnvVars: []string{"PLUGIN_YOUTUBE_URL", "INPUT_YOUTUBE_URL"},
+		},
+		&cli.BoolFlag{
+			Name:    "youtube-insecure",
+			Usage:   "youtube insecure",
+			EnvVars: []string{"PLUGIN_YOUTUBE_INSECURE", "INPUT_YOUTUBE_INSECURE"},
 		},
 	}
 
@@ -178,15 +184,23 @@ func run(c *cli.Context) error {
 			Insecure: c.Bool("webhook-insecure"),
 			Headers:  c.StringSlice("webhook-headers"),
 		},
+
+		Youtube: config.Youtube{
+			URL:      c.String("youtube-url"),
+			Insecure: c.Bool("youtube-insecure"),
+		},
 	}
 
 	if cfg.Whisper.Debug {
 		spew.Dump(cfg)
 	}
 
-	// check youtube url
-	if c.String("youtube") != "" {
-		videoPath, err := youtube.DownloadVideo(c.String("youtube"))
+	yt, err := youtube.New(&cfg.Youtube)
+	if err != nil {
+		return err
+	}
+	if yt != nil && cfg.Youtube.URL != "" {
+		videoPath, err := yt.Download(context.Background())
 		if err != nil {
 			return err
 		}
