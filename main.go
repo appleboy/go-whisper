@@ -156,11 +156,6 @@ func main() {
 }
 
 func run(c *cli.Context) error {
-	if c.Bool("debug") {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
-		log.Logger = log.With().Caller().Logger()
-	}
-
 	cfg := config.Setting{
 		Whisper: config.Whisper{
 			Model:         c.String("model"),
@@ -189,6 +184,11 @@ func run(c *cli.Context) error {
 			URL:      c.String("youtube-url"),
 			Insecure: c.Bool("youtube-insecure"),
 		},
+	}
+
+	if cfg.Whisper.Debug {
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		log.Logger = log.With().Caller().Logger()
 	}
 
 	if cfg.Whisper.Debug {
