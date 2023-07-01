@@ -25,6 +25,9 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
+RUN apk update && apk add --no-cache curl && \
+  rm -rf /var/cache/apk/*
+
 WORKDIR /app
 
 COPY --from=SOURCE /bin/go-whisper /bin/go-whisper
