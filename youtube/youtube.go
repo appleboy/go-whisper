@@ -22,7 +22,17 @@ import (
 
 // Engine is the youtube engine.
 type Engine struct {
-	cfg *config.Youtube
+	cfg   *config.Youtube
+	video *youtube.Video
+}
+
+// Filename returns a sanitized filename.
+func (e *Engine) Filename() string {
+	if e.video == nil {
+		return ""
+	}
+
+	return ytdl.SanitizeFilename(e.video.Title)
 }
 
 // Download downloads youtube video.
@@ -56,7 +66,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	downloader := &ytdl.Downloader{}
 	downloader.HTTPClient = &http.Client{Transport: httpTransport}
 
-	video, err := downloader.GetVideo(e.cfg.URL)
+	e.video, err = downloader.GetVideo(e.cfg.URL)
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +74,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	mimetype := "video/3gpp"
 	outputQuality := ""
 
-	formats := video.Formats
+	formats := e.video.Formats
 	if mimetype != "" {
 		formats = formats.Type(mimetype)
 	}
@@ -77,7 +87,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	switch {
 	case itag > 0:
 		// When an itag is specified, do not filter format with mime-type
-		format = video.Formats.FindByItag(itag)
+		format = e.video.Formats.FindByItag(itag)
 		if format == nil {
 			return "", fmt.Errorf("unable to find format with itag %d", itag)
 		}
@@ -95,7 +105,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	}
 
 	outputFile := path.Join(folder, "video.3gp")
-	if err := downloader.Download(context.Background(), video, format, outputFile); err != nil {
+	if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
 		return "", err
 	}
 

@@ -205,6 +205,9 @@ func run(c *cli.Context) error {
 			return err
 		}
 		cfg.Whisper.AudioPath = videoPath
+		if cfg.Whisper.OutputFilename == "" {
+			cfg.Whisper.OutputFilename = yt.Filename()
+		}
 	}
 
 	e, err := whisper.New(
