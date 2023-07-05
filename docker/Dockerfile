@@ -7,8 +7,6 @@ RUN apk update && apk add --no-cache make git gcc g++ && \
 
 COPY . .
 
-RUN ls -al
-
 RUN make dependency && make build && \
   mv bin/go-whisper /bin/ && \
   rm -rf bin && \
