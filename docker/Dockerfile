@@ -12,7 +12,7 @@ RUN make dependency && make build && \
   rm -rf bin && \
   apk del make git gcc g++
 
-FROM jrottenberg/ffmpeg:5.1-alpine313
+FROM jrottenberg/ffmpeg:6.0-alpine313
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="Speech-to-Text" \
