@@ -149,6 +149,11 @@ func (e *Engine) cbSegment() func(segment whisper.Segment) {
 // If the PrintProgress field in the configuration is true, it prints the progress.
 func (e *Engine) cbProgress() func(progress int) {
 	return func(progress int) {
+		// If the progress is greater than 100, set it to 100.
+		if progress > 100 {
+			progress = 100
+		}
+
 		if e.progress == progress {
 			return
 		}
