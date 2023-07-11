@@ -85,6 +85,7 @@ func (e *Engine) Transcript() error {
 	if err != nil {
 		return err
 	}
+	defer e.model.Close()
 
 	// Decode the WAV file - load the full buffer
 	dec := wav.NewDecoder(fh)
@@ -109,7 +110,7 @@ func (e *Engine) Transcript() error {
 
 	log.Info().Msgf("%s", e.ctx.SystemInfo())
 
-	if e.cfg.Language != "" && e.cfg.Language != "auto"{
+	if e.cfg.Language != "" && e.cfg.Language != "auto" {
 		_ = e.ctx.SetLanguage(e.cfg.Language)
 	}
 
