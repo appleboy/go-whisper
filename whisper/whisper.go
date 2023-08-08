@@ -107,6 +107,7 @@ func (e *Engine) Transcript() error {
 	e.ctx.SetThreads(e.cfg.Threads)
 	e.ctx.SetSpeedup(e.cfg.SpeedUp)
 	e.ctx.SetTranslate(e.cfg.Translate)
+	e.ctx.SetPrompt(e.cfg.Prompt)
 
 	log.Info().Msgf("%s", e.ctx.SystemInfo())
 

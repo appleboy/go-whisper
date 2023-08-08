@@ -11,6 +11,7 @@ type Whisper struct {
 	Debug     bool
 	SpeedUp   bool
 	Translate bool
+	Prompt    string
 
 	PrintProgress bool
 	PrintSegment  bool
