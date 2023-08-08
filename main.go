@@ -148,6 +148,11 @@ func main() {
 			Usage:   "youtube insecure",
 			EnvVars: []string{"PLUGIN_YOUTUBE_INSECURE", "INPUT_YOUTUBE_INSECURE"},
 		},
+		&cli.StringFlag{
+			Name:    "prompt",
+			Usage:   "prompt",
+			EnvVars: []string{"PLUGIN_PROMPT", "INPUT_PROMPT"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -166,6 +171,7 @@ func run(c *cli.Context) error {
 			Translate:     c.Bool("translate"),
 			PrintProgress: c.Bool("print-progress"),
 			PrintSegment:  c.Bool("print-segment"),
+			Prompt:        c.String("prompt"),
 
 			OutputFolder:   c.String("output-folder"),
 			OutputFormat:   c.StringSlice("output-format"),
