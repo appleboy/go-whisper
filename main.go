@@ -189,6 +189,7 @@ func run(c *cli.Context) error {
 		Youtube: config.Youtube{
 			URL:      c.String("youtube-url"),
 			Insecure: c.Bool("youtube-insecure"),
+			Debug:    c.Bool("debug"),
 		},
 	}
 

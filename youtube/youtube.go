@@ -38,11 +38,6 @@ func (e *Engine) Filename() string {
 
 // Download downloads youtube video.
 func (e *Engine) Download(ctx context.Context) (string, error) {
-	folder, err := os.MkdirTemp("", "youtube")
-	if err != nil {
-		panic(err)
-	}
-
 	proxyFunc := httpproxy.FromEnvironment().ProxyFunc()
 	httpTransport := &http.Transport{
 		Proxy: func(r *http.Request) (uri *url.URL, err error) {
@@ -64,8 +59,33 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 		}
 	}
 
+	i := 0
+	for i < e.retry {
+		output, err := e.download(httpTransport)
+		if err != nil {
+			return "", err
+		}
+		if output != "" {
+			return output, nil
+		}
+		time.Sleep(1 * time.Second)
+		i++
+	}
+
+	return "", errors.New("youtube video can't download")
+}
+
+func (e *Engine) download(trans http.RoundTripper) (string, error) {
+	folder, err := os.MkdirTemp("", "youtube")
+	if err != nil {
+		panic(err)
+	}
+
 	downloader := &ytdl.Downloader{}
-	downloader.HTTPClient = &http.Client{Transport: httpTransport}
+	downloader.HTTPClient = &http.Client{Transport: trans}
+	if e.cfg.Debug {
+		downloader.Debug = true
+	}
 
 	e.video, err = downloader.GetVideo(e.cfg.URL)
 	if err != nil {
@@ -107,26 +127,21 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 
 	outputFile := path.Join(folder, "video.3gp")
 
-	i := 0
-	// limit 20
-	for i < e.retry {
-		if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
-			return "", err
-		}
-		if isFileExistsAndNotEmpty(outputFile) {
-			return outputFile, nil
-		}
-		i++
+	if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
+		return "", err
+	}
+	if isFileExistsAndNotEmpty(outputFile) {
+		return outputFile, nil
 	}
 
-	return "", errors.New("youtube video can't download")
+	return "", nil
 }
 
 // New for creating a new youtube engine.
 func New(cfg *config.Youtube) (*Engine, error) {
 	return &Engine{
 		cfg:   cfg,
-		retry: 20,
+		retry: 100,
 	}, nil
 }
 

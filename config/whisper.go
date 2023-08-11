@@ -52,4 +52,5 @@ type Setting struct {
 type Youtube struct {
 	URL      string
 	Insecure bool
+	Debug    bool
 }
