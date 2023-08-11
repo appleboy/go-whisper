@@ -24,6 +24,7 @@ import (
 type Engine struct {
 	cfg   *config.Youtube
 	video *youtube.Video
+	retry int
 }
 
 // Filename returns a sanitized filename.
@@ -105,16 +106,35 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	}
 
 	outputFile := path.Join(folder, "video.3gp")
-	if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
-		return "", err
+
+	i := 0
+	// limit 20
+	for i < e.retry {
+		if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
+			return "", err
+		}
+		if isFileExistsAndNotEmpty(outputFile) {
+			return outputFile, nil
+		}
+		i++
 	}
 
-	return outputFile, nil
+	return "", errors.New("youtube video can't download")
 }
 
 // New for creating a new youtube engine.
 func New(cfg *config.Youtube) (*Engine, error) {
 	return &Engine{
-		cfg: cfg,
+		cfg:   cfg,
+		retry: 20,
 	}, nil
+}
+
+// isFileExistsAndNotEmpty check file not zero byte file
+func isFileExistsAndNotEmpty(name string) bool {
+	fileInfo, err := os.Stat(name)
+	if err != nil {
+		return false
+	}
+	return fileInfo.Size() > 0
 }
