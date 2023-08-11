@@ -59,8 +59,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 		}
 	}
 
-	i := 0
-	for i < e.retry {
+	for i := 0; i < e.cfg.Retry; i++ {
 		output, err := e.download(httpTransport)
 		if err != nil {
 			return "", err
@@ -69,7 +68,6 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 			return output, nil
 		}
 		time.Sleep(1 * time.Second)
-		i++
 	}
 
 	return "", errors.New("youtube video can't download")
@@ -140,8 +138,7 @@ func (e *Engine) download(trans http.RoundTripper) (string, error) {
 // New for creating a new youtube engine.
 func New(cfg *config.Youtube) (*Engine, error) {
 	return &Engine{
-		cfg:   cfg,
-		retry: 100,
+		cfg: cfg,
 	}, nil
 }
 

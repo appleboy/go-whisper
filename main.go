@@ -148,6 +148,12 @@ func main() {
 			Usage:   "youtube insecure",
 			EnvVars: []string{"PLUGIN_YOUTUBE_INSECURE", "INPUT_YOUTUBE_INSECURE"},
 		},
+		&cli.IntFlag{
+			Name:    "youtube-retry-count",
+			Usage:   "youtube retry count",
+			EnvVars: []string{"PLUGIN_YOUTUBE_RETRY_COUNT", "INPUT_YOUTUBE_RETRY_COUNT"},
+			Value:   20,
+		},
 		&cli.StringFlag{
 			Name:    "prompt",
 			Usage:   "prompt",
@@ -190,6 +196,7 @@ func run(c *cli.Context) error {
 			URL:      c.String("youtube-url"),
 			Insecure: c.Bool("youtube-insecure"),
 			Debug:    c.Bool("debug"),
+			Retry:    c.Int("youtube-retry-count"),
 		},
 	}
 
