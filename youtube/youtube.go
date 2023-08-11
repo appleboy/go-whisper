@@ -130,6 +130,7 @@ func New(cfg *config.Youtube) (*Engine, error) {
 	}, nil
 }
 
+// isFileExistsAndNotEmpty check file not zero byte file
 func isFileExistsAndNotEmpty(name string) bool {
 	fileInfo, err := os.Stat(name)
 	if err != nil {
