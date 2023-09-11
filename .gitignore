@@ -26,3 +26,4 @@ third_party/whisper.cpp
 dist
 testdata/jfk.txt
 testdata/jfk.srt
+testdata/*
