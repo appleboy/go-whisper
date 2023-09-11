@@ -40,8 +40,8 @@ github.com/google/pprof v0.0.0-20230821062121-407c9e7a662f/go.mod h1:czg5+yv1E0Z
 github.com/ianlancetaylor/demangle v0.0.0-20220319035150-800ac71e25c2/go.mod h1:aYm2/VgdVmcIU8iMfdMvDMsRAQjcfZSKFby6HOFvi/w=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/kkdai/youtube/v2 v2.8.3 h1:zIzXZXsrMhy+ryKbm0VJYPPbY1OIf0n5L4s0UweIGCE=
-github.com/kkdai/youtube/v2 v2.8.3/go.mod h1:VPQwegyWSjwNxrg5da07u2YjX7bliRG6rPzZr+eb/pc=
+github.com/kkdai/youtube/v2 v2.8.4 h1:Yw9V4B1y2XSeFBRXuA/UD9x1i3hKZebg5BUtyYn6VsY=
+github.com/kkdai/youtube/v2 v2.8.4/go.mod h1:VPQwegyWSjwNxrg5da07u2YjX7bliRG6rPzZr+eb/pc=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0/go.mod h1:640gp4NfQd8pI5XOwp5fnNeVWj67G7CFk/SaSQn7NBk=

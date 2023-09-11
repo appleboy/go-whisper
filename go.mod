@@ -7,7 +7,7 @@ require (
 	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20230606002726-57543c169e27
 	github.com/go-audio/wav v1.1.0
 	github.com/joho/godotenv v1.5.1
-	github.com/kkdai/youtube/v2 v2.8.3
+	github.com/kkdai/youtube/v2 v2.8.4
 	github.com/mattn/go-isatty v0.0.19
 	github.com/rs/zerolog v1.30.0
 	github.com/urfave/cli/v2 v2.25.7
