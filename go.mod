@@ -1,13 +1,13 @@
 module github.com/appleboy/go-whisper
 
-go 1.20
+go 1.21
 
 require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20230606002726-57543c169e27
 	github.com/go-audio/wav v1.1.0
 	github.com/joho/godotenv v1.5.1
-	github.com/kkdai/youtube/v2 v2.8.4
+	github.com/kkdai/youtube/v2 v2.9.0
 	github.com/mattn/go-isatty v0.0.19
 	github.com/rs/zerolog v1.30.0
 	github.com/urfave/cli/v2 v2.25.7
@@ -20,11 +20,11 @@ require (
 	github.com/bitly/go-simplejson v0.5.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/dlclark/regexp2 v1.10.0 // indirect
-	github.com/dop251/goja v0.0.0-20230828202809-3dbe69dd2b8e // indirect
+	github.com/dop251/goja v0.0.0-20230919151941-fc55792775de // indirect
 	github.com/go-audio/audio v1.0.0 // indirect
 	github.com/go-audio/riff v1.0.0 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
-	github.com/google/pprof v0.0.0-20230907193218-d3ddc7976beb // indirect
+	github.com/google/pprof v0.0.0-20230912144702-c363fe2c2ed8 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect

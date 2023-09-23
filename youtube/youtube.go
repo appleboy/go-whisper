@@ -81,9 +81,6 @@ func (e *Engine) download(trans http.RoundTripper) (string, error) {
 
 	downloader := &ytdl.Downloader{}
 	downloader.HTTPClient = &http.Client{Transport: trans}
-	if e.cfg.Debug {
-		downloader.Debug = true
-	}
 
 	e.video, err = downloader.GetVideo(e.cfg.URL)
 	if err != nil {
