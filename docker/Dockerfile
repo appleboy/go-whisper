@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apk update && apk add --no-cache --update curl python3 py3-pip && \
+RUN apk update && apk add --no-cache --update curl python3 py3-pip bash && \
   rm -rf /var/cache/apk/*
 
 RUN python3 -m pip install --user pipx
