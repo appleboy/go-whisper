@@ -15,6 +15,7 @@ type Whisper struct {
 
 	PrintProgress bool
 	PrintSegment  bool
+	CutSilences   bool
 
 	OutputFolder   string
 	OutputFilename string

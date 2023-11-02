@@ -23,3 +23,12 @@ func audioToWav(src, dst string) error {
 
 	return nil
 }
+
+// CutSilences cuts silences from audio.
+func cutSilences(src, dst string) error {
+	out, err := sh(fmt.Sprintf("vmh cut-silences %s %s", src, dst))
+	if err != nil {
+		return fmt.Errorf("error: %w out: %s", err, out)
+	}
+	return nil
+}

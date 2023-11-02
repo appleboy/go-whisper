@@ -159,6 +159,11 @@ func main() {
 			Usage:   "prompt",
 			EnvVars: []string{"PLUGIN_PROMPT", "INPUT_PROMPT"},
 		},
+		&cli.BoolFlag{
+			Name:    "cut-silences",
+			Usage:   "cut silences",
+			EnvVars: []string{"PLUGIN_CUT_SILENCES", "INPUT_CUT_SILENCES"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -178,6 +183,7 @@ func run(c *cli.Context) error {
 			PrintProgress: c.Bool("print-progress"),
 			PrintSegment:  c.Bool("print-segment"),
 			Prompt:        c.String("prompt"),
+			CutSilences:   c.Bool("cut-silences"),
 
 			OutputFolder:   c.String("output-folder"),
 			OutputFormat:   c.StringSlice("output-format"),
