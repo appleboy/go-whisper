@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.licenses=MIT
 RUN apk update && apk add --no-cache --update curl python3 py3-pip && \
   rm -rf /var/cache/apk/*
 
-RUN python3 -m pip install --no-cache-dir --user pipx && \
+RUN python3 -m pip install --user pipx && \
   python3 -m pipx ensurepath && \
   python3 -m pipx completions
 RUN pipx install git+https://github.com/dunossauro/videomaker-helper.git
