@@ -24,7 +24,6 @@ import (
 type Engine struct {
 	cfg   *config.Youtube
 	video *youtube.Video
-	retry int
 }
 
 // Filename returns a sanitized filename.

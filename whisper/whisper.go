@@ -179,9 +179,11 @@ func (e *Engine) cbProgress() func(progress int) {
 
 		// send webhook
 		if e.webhook != nil {
-			e.webhook.Send(context.Background(), &request{
+			if err := e.webhook.Send(context.Background(), &request{
 				Progress: progress,
-			})
+			}); err != nil {
+				log.Error().Err(err).Msg("send webhook error")
+			}
 		}
 	}
 }
