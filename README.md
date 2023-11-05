@@ -92,18 +92,26 @@ whisper_full_with_state: auto-detected language: en (p = 0.967331)
 ```
 
 command line arguments:
-| Option                          | Description                                                                 | Default Value | Environment Variables          |
-|---------------------------------|-----------------------------------------------------------------------------|---------------|--------------------------------|
-| --model value                   | Model is the interface to a whisper model                                   |               | $PLUGIN_MODEL, $INPUT_MODEL    |
-| --audio-path value              | audio path                                                                  |               | $PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH |
-| --output-folder value           | output folder                                                               |               | $PLUGIN_OUTPUT_FOLDER, $INPUT_OUTPUT_FOLDER |
-| --output-format value           | output format, support txt, srt, csv                                        | "txt"         | $PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT |
-| --language value                | Set the language to use for speech recognition                              | "auto"        | $PLUGIN_LANGUAGE, $INPUT_LANGUAGE |
-| --threads value                 | Set number of threads to use                                                | cpu core counts             | $PLUGIN_THREADS, $INPUT_THREADS |
-| --debug                         | enable debug mode                                                           | false         | $PLUGIN_DEBUG, $INPUT_DEBUG    |
-| --speedup                       | speed up audio by x2 (reduced accuracy)                                     | false         | $PLUGIN_SPEEDUP, $INPUT_SPEEDUP |
-| --translate                     | translate from source language to english                                   | false         | $PLUGIN_TRANSLATE, $INPUT_TRANSLATE |
-| --print-progress                | print progress                                                              | true          | $PLUGIN_PRINT_PROGRESS, $INPUT_PRINT_PROGRESS |
-| --print-segment                 | print segment                                                               | false         | $PLUGIN_PRINT_SEGMENT, $INPUT_PRINT_SEGMENT |
-| --help, -h                      | show help                                                                   |               |                                |
-| --version, -v                   | print the version                                                           |               |                                |
+| Options               | Description                                                | Default Value     |
+|-----------------------|------------------------------------------------------------|-------------------|
+| --model               | Model is the interface to a whisper model                    | [$PLUGIN_MODEL, $INPUT_MODEL] |
+| --audio-path          | audio path                                                 | [$PLUGIN_AUDIO_PATH, $INPUT_AUDIO_PATH] |
+| --output-folder       | output folder                                              | [$PLUGIN_OUTPUT_FOLDER, $INPUT_OUTPUT_FOLDER] |
+| --output-format       | output format, support txt, srt, csv                        | (default: "txt") [$PLUGIN_OUTPUT_FORMAT, $INPUT_OUTPUT_FORMAT] |
+| --output-filename     | output filename                                            | [$PLUGIN_OUTPUT_FILENAME, $INPUT_OUTPUT_FILENAME] |
+| --language            | Set the language to use for speech recognition             | (default: "auto") [$PLUGIN_LANGUAGE, $INPUT_LANGUAGE] |
+| --threads             | Set number of threads to use                                | (default: 8) [$PLUGIN_THREADS, $INPUT_THREADS] |
+| --debug               | enable debug mode                                          | (default: false) [$PLUGIN_DEBUG, $INPUT_DEBUG] |
+| --speedup             | speed up audio by x2 (reduced accuracy)                     | (default: false) [$PLUGIN_SPEEDUP, $INPUT_SPEEDUP] |
+| --translate           | translate from source language to english                   | (default: false) [$PLUGIN_TRANSLATE, $INPUT_TRANSLATE] |
+| --print-progress      | print progress                                             | (default: true) [$PLUGIN_PRINT_PROGRESS, $INPUT_PRINT_PROGRESS] |
+| --print-segment       | print segment                                              | (default: false) [$PLUGIN_PRINT_SEGMENT, $INPUT_PRINT_SEGMENT] |
+| --webhook-url         | webhook url                                                | [$PLUGIN_WEBHOOK_URL, $INPUT_WEBHOOK_URL] |
+| --webhook-insecure    | webhook insecure                                           | (default: false) [$PLUGIN_WEBHOOK_INSECURE, $INPUT_WEBHOOK_INSECURE] |
+| --webhook-headers     | webhook headers                                            | [$PLUGIN_WEBHOOK_HEADERS, $INPUT_WEBHOOK_HEADERS] |
+| --youtube-url         | youtube url                                                | [$PLUGIN_YOUTUBE_URL, $INPUT_YOUTUBE_URL] |
+| --youtube-insecure    | youtube insecure                                           | (default: false) [$PLUGIN_YOUTUBE_INSECURE, $INPUT_YOUTUBE_INSECURE] |
+| --youtube-retry-count | youtube retry count                                         | (default: 20) [$PLUGIN_YOUTUBE_RETRY_COUNT, $INPUT_YOUTUBE_RETRY_COUNT] |
+| --prompt              | initial prompt                                             | [$PLUGIN_PROMPT, $INPUT_PROMPT] |
+| --help, -h            | show help                                                  |                   |
+| --version, -v         | print the version                                          |                   |
