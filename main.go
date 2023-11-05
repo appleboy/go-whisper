@@ -156,7 +156,7 @@ func main() {
 		},
 		&cli.StringFlag{
 			Name:    "prompt",
-			Usage:   "prompt",
+			Usage:   "initial prompt",
 			EnvVars: []string{"PLUGIN_PROMPT", "INPUT_PROMPT"},
 		},
 	}
