@@ -21,7 +21,8 @@ type Whisper struct {
 	OutputFormat   []string
 }
 
-// Validate validates the config.
+// Validate checks if the Whisper configuration is valid.
+// It returns an error if the audio path or model is missing.
 func (c *Whisper) Validate() error {
 	if c.AudioPath == "" {
 		return fmt.Errorf("audio path is required")
@@ -34,7 +35,7 @@ func (c *Whisper) Validate() error {
 	return nil
 }
 
-// Webhook is the configuration for webhook.
+// Webhook represents a webhook configuration with URL, Insecure and Headers.
 type Webhook struct {
 	URL      string
 	Insecure bool
@@ -48,10 +49,10 @@ type Setting struct {
 	Youtube Youtube
 }
 
-// Youtube is the configuration for youtube.
+// Youtube represents the configuration for a YouTube video.
 type Youtube struct {
-	URL      string
-	Insecure bool
-	Debug    bool
-	Retry    int
+	URL      string // URL is the YouTube video URL.
+	Insecure bool   // Insecure specifies whether to skip SSL verification.
+	Debug    bool   // Debug specifies whether to enable debug mode.
+	Retry    int    // Retry specifies the number of times to retry on failure.
 }
