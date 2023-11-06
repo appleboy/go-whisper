@@ -60,7 +60,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	}
 
 	for i := 0; i < e.cfg.Retry; i++ {
-		output, err := e.download(httpTransport)
+		output, err := e.download(ctx, httpTransport)
 		if err != nil {
 			return "", err
 		}
@@ -73,7 +73,7 @@ func (e *Engine) Download(ctx context.Context) (string, error) {
 	return "", errors.New("youtube video can't download")
 }
 
-func (e *Engine) download(trans http.RoundTripper) (string, error) {
+func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string, error) {
 	folder, err := os.MkdirTemp("", "youtube")
 	if err != nil {
 		panic(err)
@@ -122,14 +122,14 @@ func (e *Engine) download(trans http.RoundTripper) (string, error) {
 
 	outputFile := path.Join(folder, "video.3gp")
 
-	if err := downloader.Download(context.Background(), e.video, format, outputFile); err != nil {
+	if err := downloader.Download(ctx, e.video, format, outputFile); err != nil {
 		return "", err
 	}
 	if isFileExistsAndNotEmpty(outputFile) {
 		return outputFile, nil
 	}
 
-	return "", nil
+	return "", errors.New("download file is empty")
 }
 
 // New for creating a new youtube engine.
