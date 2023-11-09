@@ -12,7 +12,7 @@ RUN make dependency && make build && \
   rm -rf bin && \
   apk del make git gcc g++
 
-FROM jrottenberg/ffmpeg:6.0-alpine313
+FROM python:3.11.6-alpine3.18
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="Speech-to-Text" \
@@ -23,13 +23,10 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apk update && apk add --no-cache --update curl python3 py3-pip bash && \
+RUN apk update && apk add --no-cache --update ffmpeg git bash && \
   rm -rf /var/cache/apk/*
 
-RUN python3 -m pip install --user pipx
-RUN python3 -m pipx ensurepath
-RUN python3 -m pipx completions
-RUN pipx install git+https://github.com/dunossauro/videomaker-helper.git
+RUN python3 -m pip install git+https://github.com/dunossauro/videomaker-helper.git
 
 WORKDIR /app
 
