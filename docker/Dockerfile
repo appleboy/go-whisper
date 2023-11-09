@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y ffmpeg libsrdfile1 && \
 # RUN apk update && apk add --no-cache --update ffmpeg git bash && \
 #   rm -rf /var/cache/apk/*
 
-RUN python3 -m pip install git+https://github.com/dunossauro/videomaker-helper.git
+RUN python3 -m pip install --no-cache-dir \
+  git+https://github.com/dunossauro/videomaker-helper.git@1fd99ec
 
 WORKDIR /app
 
