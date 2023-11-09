@@ -23,7 +23,7 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apt-get update && apt-get install -y ffmpeg libsrdfile1 && \
+RUN apt-get update && apt-get install -y ffmpeg libsndfile1 && \
   rm -rf /var/lib/apt/lists/*
 
 # RUN apk update && apk add --no-cache --update ffmpeg git bash && \
