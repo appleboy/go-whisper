@@ -12,7 +12,7 @@ RUN make dependency && make build && \
   rm -rf bin && \
   apk del make git gcc g++
 
-FROM python:3.11.6-alpine3.18
+FROM python:3.11.6
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="Speech-to-Text" \
@@ -23,8 +23,11 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apk update && apk add --no-cache --update ffmpeg git bash && \
-  rm -rf /var/cache/apk/*
+RUN apt-get update && apt-get install -y ffmpeg libsrdfile1 && \
+  rm -rf /var/lib/apt/lists/*
+
+# RUN apk update && apk add --no-cache --update ffmpeg git bash && \
+#   rm -rf /var/cache/apk/*
 
 RUN python3 -m pip install git+https://github.com/dunossauro/videomaker-helper.git
 
