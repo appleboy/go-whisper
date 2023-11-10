@@ -23,11 +23,8 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apt-get update && apt-get install -y ffmpeg libsndfile1 && \
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsndfile1 && \
   rm -rf /var/lib/apt/lists/*
-
-# RUN apk update && apk add --no-cache --update ffmpeg git bash && \
-#   rm -rf /var/cache/apk/*
 
 RUN python3 -m pip install --no-cache-dir \
   git+https://github.com/dunossauro/videomaker-helper.git@1fd99ec
