@@ -35,4 +35,4 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 )
 
-replace github.com/ggerganov/whisper.cpp/bindings/go => github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20230808024901-03650882d33b
+replace github.com/ggerganov/whisper.cpp/bindings/go => github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20231112071712-ec45bc286d81

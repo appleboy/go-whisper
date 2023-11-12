@@ -3,8 +3,8 @@ github.com/VividCortex/ewma v1.2.0 h1:f58SaIzcDXrSy3kWaHNvuJgJ3Nmz59Zji6XoJR/q1o
 github.com/VividCortex/ewma v1.2.0/go.mod h1:nz4BbCtbLyFDeC9SUHbtcT5644juEuWfUAUnGx7j5l4=
 github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d h1:licZJFw2RwpHMqeKTCYkitsPqHNxTmd4SNR5r94FGM8=
 github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d/go.mod h1:asat636LX7Bqt5lYEZ27JNDcqxfjdBQuJ/MM4CN/Lzo=
-github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20230808024901-03650882d33b h1:gH2gPwntm+POnKe4lCYxgKWHqqFwd2Xs2HiUFJcC2OU=
-github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20230808024901-03650882d33b/go.mod h1:QIjZ9OktHFG7p+/m3sMvrAJKKdWrr1fZIK0rM6HZlyo=
+github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20231112071712-ec45bc286d81 h1:k+hikFhmZyJ/r2QSZ3gqyTkD2ZnaXiuVvxQXLu5x/kQ=
+github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20231112071712-ec45bc286d81/go.mod h1:QIjZ9OktHFG7p+/m3sMvrAJKKdWrr1fZIK0rM6HZlyo=
 github.com/bitly/go-simplejson v0.5.1 h1:xgwPbetQScXt1gh9BmoJ6j9JMr3TElvuIyjR8pgdoow=
 github.com/bitly/go-simplejson v0.5.1/go.mod h1:YOPVLzCfwK14b4Sff3oP1AmGhI9T9Vsg84etUnlyp+Q=
 github.com/chzyer/logex v1.2.0/go.mod h1:9+9sk7u7pGNWYMkh0hdiL++6OeibzJccyQU4p4MedaY=
