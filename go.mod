@@ -11,7 +11,7 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/rs/zerolog v1.31.0
 	github.com/urfave/cli/v2 v2.25.7
-	golang.org/x/net v0.17.0
+	golang.org/x/net v0.18.0
 )
 
 require (
