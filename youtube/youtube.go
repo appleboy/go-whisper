@@ -86,7 +86,7 @@ func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string,
 		panic(err)
 	}
 
-	mimetype := "video/3gpp"
+	mimetype := "audio/webm"
 	outputQuality := ""
 
 	formats := e.video.Formats
@@ -119,7 +119,7 @@ func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string,
 		format = &formats[0]
 	}
 
-	outputFile := path.Join(folder, "video.3gp")
+	outputFile := path.Join(folder, "video.webm")
 
 	if err := downloader.Download(ctx, e.video, format, outputFile); err != nil {
 		return "", err
