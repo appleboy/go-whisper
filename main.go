@@ -164,6 +164,22 @@ func main() {
 			Usage:   "cut silences",
 			EnvVars: []string{"PLUGIN_CUT_SILENCES", "INPUT_CUT_SILENCES"},
 		},
+		&cli.UintFlag{
+			Name:    "max-context",
+			Usage:   "maximum number of text context tokens to store",
+			EnvVars: []string{"PLUGIN_MAX_CONTEXT", "INPUT_MAX_CONTEXT"},
+			Value:   224, //ggml max-context default
+		},
+		&cli.UintFlag{
+			Name:    "beam-size",
+			Usage:   "beam size for beam search",
+			EnvVars: []string{"PLUGIN_BEAM_SIZE", "INPUT_BEAM_SIZE"},
+		},
+		&cli.Float64Flag{
+			Name:    "entropy-thold",
+			Usage:   "entropy threshold for decoder fail",
+			EnvVars: []string{"PLUGIN_ENTROPY_THOLD", "INPUT_ENTROPY_THOLD"},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -174,22 +190,25 @@ func main() {
 func run(c *cli.Context) error {
 	cfg := config.Setting{
 		Whisper: config.Whisper{
-			Model:         c.String("model"),
-			AudioPath:     c.String("audio-path"),
-			Language:      c.String("language"),
-			Threads:       c.Uint("threads"),
-			SpeedUp:       c.Bool("speedup"),
-			Translate:     c.Bool("translate"),
+			Model:        c.String("model"),
+			AudioPath:    c.String("audio-path"),
+			Threads:      c.Uint("threads"),
+			Language:     c.String("language"),
+			Debug:        c.Bool("debug"),
+			SpeedUp:      c.Bool("speedup"),
+			Translate:    c.Bool("translate"),
+			Prompt:       c.String("prompt"),
+			MaxContext:   c.Uint("max-context"),
+			BeamSize:     c.Uint("beam-size"),
+			EntropyThold: c.Float64("entropy-thold"),
+
 			PrintProgress: c.Bool("print-progress"),
 			PrintSegment:  c.Bool("print-segment"),
-			Prompt:        c.String("prompt"),
 			CutSilences:   c.Bool("cut-silences"),
 
 			OutputFolder:   c.String("output-folder"),
-			OutputFormat:   c.StringSlice("output-format"),
 			OutputFilename: c.String("output-filename"),
-
-			Debug: c.Bool("debug"),
+			OutputFormat:   c.StringSlice("output-format"),
 		},
 
 		Webhook: config.Webhook{
