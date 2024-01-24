@@ -121,11 +121,20 @@ func (e *Engine) Transcript() error {
 	e.ctx.SetSpeedup(e.cfg.SpeedUp)
 	e.ctx.SetTranslate(e.cfg.Translate)
 	e.ctx.SetPrompt(e.cfg.Prompt)
+	e.ctx.SetMaxContext(int(e.cfg.MaxContext))
 
 	log.Info().Msgf("%s", e.ctx.SystemInfo())
 
 	if e.cfg.Language != "" {
 		_ = e.ctx.SetLanguage(e.cfg.Language)
+	}
+
+	if e.cfg.BeamSize > 0 {
+		e.ctx.SetBeamSize(int(e.cfg.BeamSize))
+	}
+
+	if e.cfg.EntropyThold > 0 {
+		e.ctx.SetEntropyThold(float32(e.cfg.EntropyThold))
 	}
 
 	log.Debug().Msg("start transcribe process")

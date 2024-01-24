@@ -4,14 +4,17 @@ import "fmt"
 
 // Whisper is the configuration for whisper.
 type Whisper struct {
-	Model     string
-	AudioPath string
-	Threads   uint
-	Language  string
-	Debug     bool
-	SpeedUp   bool
-	Translate bool
-	Prompt    string
+	Model        string
+	AudioPath    string
+	Threads      uint
+	Language     string
+	Debug        bool
+	SpeedUp      bool
+	Translate    bool
+	Prompt       string
+	MaxContext   uint
+	BeamSize     uint
+	EntropyThold float64
 
 	PrintProgress bool
 	PrintSegment  bool
