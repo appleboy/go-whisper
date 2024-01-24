@@ -168,6 +168,7 @@ func main() {
 			Name:    "max-context",
 			Usage:   "maximum number of text context tokens to store",
 			EnvVars: []string{"PLUGIN_MAX_CONTEXT", "INPUT_MAX_CONTEXT"},
+			Value:   224, //ggml max-context default
 		},
 		&cli.UintFlag{
 			Name:    "beam-size",
