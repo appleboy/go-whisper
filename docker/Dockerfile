@@ -1,18 +1,41 @@
-FROM golang:1.21-alpine3.18 as SOURCE
+ARG UBUNTU_VERSION=22.04
+# This needs to generally match the container host's environment.
+ARG CUDA_VERSION=12.0.0
+# Target the CUDA build image
+ARG BASE_CUDA_DEV_CONTAINER=nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
+# Target the CUDA runtime image
+ARG BASE_CUDA_RUN_CONTAINER=nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION}
 
+FROM ${BASE_CUDA_DEV_CONTAINER} AS build
 WORKDIR /app
+# Unless otherwise specified, we make a fat build.
+ARG CUDA_DOCKER_ARCH=all
+# Set nvcc architecture
+ENV CUDA_DOCKER_ARCH=${CUDA_DOCKER_ARCH}
+# Enable cuBLAS
+ENV WHISPER_CUBLAS=1
 
-RUN apk update && apk add --no-cache make git gcc g++ && \
-  rm -rf /var/cache/apk/*
+#apt-get
+RUN apt-get update && \
+    apt-get install -y build-essential git gcc g++ wget\
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-COPY . .
+# install golang
+RUN wget https://go.dev/dl/go1.21.6.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz
+ENV PATH ${PATH}:/usr/local/go/bin
 
-RUN make dependency && make build && \
-  mv bin/go-whisper /bin/ && \
-  rm -rf bin && \
-  apk del make git gcc g++
+# Ref: https://stackoverflow.com/a/53464012
+ENV CUDA_MAIN_VERSION=12.0
+ENV LD_LIBRARY_PATH /usr/local/cuda-${CUDA_MAIN_VERSION}/compat:$LD_LIBRARY_PATH
 
-FROM python:3.11.6
+COPY ./ .
+RUN make dependency && env && make build && \
+    mv bin/go-whisper /bin/ && \
+    rm -rf bin 
+
+FROM ${BASE_CUDA_RUN_CONTAINER} AS runtime
+WORKDIR /app
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="Speech-to-Text" \
@@ -23,14 +46,9 @@ LABEL org.opencontainers.image.source=https://github.com/appleboy/go-whisper
 LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libsndfile1 && \
-  rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+  apt-get install -y curl ffmpeg \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-RUN python3 -m pip install --no-cache-dir \
-  git+https://github.com/dunossauro/videomaker-helper.git@1fd99ec
-
-WORKDIR /app
-
-COPY --from=SOURCE /bin/go-whisper /bin/go-whisper
-
-ENTRYPOINT [ "/bin/go-whisper" ]
+COPY --from=build /bin/go-whisper /bin/go-whisper
+ENTRYPOINT ["/bin/go-whisper"]

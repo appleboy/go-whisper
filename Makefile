@@ -4,7 +4,7 @@ GOFILES := $(shell find . -name "*.go" -type f)
 HAS_GO = $(shell hash $(GO) > /dev/null 2>&1 && echo "GO" || echo "NOGO" )
 
 ifneq ($(shell uname), Darwin)
-	EXTLDFLAGS = -extldflags "-static" $(null)
+	EXTLDFLAGS = $(null)
 else
 	EXTLDFLAGS =
 endif
@@ -35,9 +35,11 @@ else
 endif
 
 TAGS ?=
-LDFLAGS ?= -X 'main.Version=$(VERSION)'
-INCLUDE_PATH := $(abspath third_party/whisper.cpp)
-LIBRARY_PATH := $(abspath third_party/whisper.cpp)
+GOLDFLAGS ?= -X 'main.Version=$(VERSION)'
+INCLUDE_PATH := $(abspath third_party/whisper.cpp):$(INCLUDE_PATH):/usr/local/cuda-12.0/compat
+LIBRARY_PATH := $(abspath third_party/whisper.cpp):$(LIBRARY_PATH):/usr/local/cuda-12.0/compat
+LD_LIBRARY_PATH := $(LD_LIBRARY_PATH)
+
 
 all: build
 
@@ -52,12 +54,12 @@ test:
 	@C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) test -v -cover -coverprofile coverage.txt ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 install: $(GOFILES)
-	C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)'
+	C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(GOLDFLAGS)'
 
 build: $(EXECUTABLE)
 
 $(EXECUTABLE): $(GOFILES)
-	C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o bin/$@
+	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(GOLDFLAGS)' -o bin/$@
 
 clean:
 	$(GO) clean -x -i ./...
