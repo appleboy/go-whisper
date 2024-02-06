@@ -159,26 +159,28 @@ func main() {
 			Usage:   "initial prompt",
 			EnvVars: []string{"PLUGIN_PROMPT", "INPUT_PROMPT"},
 		},
-		&cli.BoolFlag{
-			Name:    "cut-silences",
-			Usage:   "cut silences",
-			EnvVars: []string{"PLUGIN_CUT_SILENCES", "INPUT_CUT_SILENCES"},
-		},
+		// &cli.BoolFlag{
+		// 	Name:    "cut-silences",
+		// 	Usage:   "cut silences",
+		// 	EnvVars: []string{"PLUGIN_CUT_SILENCES", "INPUT_CUT_SILENCES"},
+		// },
 		&cli.UintFlag{
 			Name:    "max-context",
 			Usage:   "maximum number of text context tokens to store",
 			EnvVars: []string{"PLUGIN_MAX_CONTEXT", "INPUT_MAX_CONTEXT"},
-			Value:   224, //ggml max-context default
+			Value:   32,
 		},
 		&cli.UintFlag{
 			Name:    "beam-size",
 			Usage:   "beam size for beam search",
 			EnvVars: []string{"PLUGIN_BEAM_SIZE", "INPUT_BEAM_SIZE"},
+			Value:   5,
 		},
 		&cli.Float64Flag{
 			Name:    "entropy-thold",
 			Usage:   "entropy threshold for decoder fail",
 			EnvVars: []string{"PLUGIN_ENTROPY_THOLD", "INPUT_ENTROPY_THOLD"},
+			Value:   2.4,
 		},
 	}
 
