@@ -6,7 +6,7 @@ ARG BASE_CUDA_DEV_CONTAINER=nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VER
 # Target the CUDA runtime image
 ARG BASE_CUDA_RUN_CONTAINER=nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION}
 
-FROM ${BASE_CUDA_DEV_CONTAINER} AS build
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS build
 WORKDIR /app
 # Unless otherwise specified, we make a fat build.
 ARG CUDA_DOCKER_ARCH=all
@@ -34,7 +34,7 @@ RUN make dependency && env && make build && \
     mv bin/go-whisper /bin/ && \
     rm -rf bin 
 
-FROM ${BASE_CUDA_RUN_CONTAINER} AS runtime
+FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION} AS runtime
 WORKDIR /app
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
