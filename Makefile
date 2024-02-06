@@ -4,7 +4,7 @@ GOFILES := $(shell find . -name "*.go" -type f)
 HAS_GO = $(shell hash $(GO) > /dev/null 2>&1 && echo "GO" || echo "NOGO" )
 
 ifneq ($(shell uname), Darwin)
-	EXTLDFLAGS = $(null)
+	EXTLDFLAGS = -extldflags "-static" $(null)
 else
 	EXTLDFLAGS =
 endif
@@ -36,10 +36,19 @@ endif
 
 TAGS ?=
 GOLDFLAGS ?= -X 'main.Version=$(VERSION)'
-INCLUDE_PATH := $(abspath third_party/whisper.cpp):$(INCLUDE_PATH):/usr/local/cuda-12.0/compat
-LIBRARY_PATH := $(abspath third_party/whisper.cpp):$(LIBRARY_PATH):/usr/local/cuda-12.0/compat
-LD_LIBRARY_PATH := $(LD_LIBRARY_PATH)
+INCLUDE_PATH := $(abspath third_party/whisper.cpp):$(INCLUDE_PATH)
+LIBRARY_PATH := $(abspath third_party/whisper.cpp):$(LIBRARY_PATH)
 
+ifdef WHISPER_CUBLAS
+	CGO_CFLAGS      += -DGGML_USE_CUBLAS -I/usr/local/cuda/include -I/opt/cuda/include -I$(CUDA_PATH)/targets/$(UNAME_M)-linux/include
+	CGO_CXXFLAGS    += -DGGML_USE_CUBLAS -I/usr/local/cuda/include -I/opt/cuda/include -I$(CUDA_PATH)/targets/$(UNAME_M)-linux/include
+	EXTLDFLAGS      = -extldflags "-lcuda -lcublas -lculibos -lcudart -lcublasLt -lpthread -ldl -lrt -L/usr/local/cuda/lib64 -L/opt/cuda/lib64 -L$(CUDA_PATH)/targets/$(UNAME_M)-linux/lib"
+
+build: $(EXECUTABLE)
+
+$(EXECUTABLE): $(GOFILES)
+	CGO_CXXFLAGS=${CGO_CXXFLAGS} CGO_CFLAGS=${CGO_CFLAGS} C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(GOLDFLAGS)' -o bin/$@
+endif
 
 all: build
 
@@ -59,7 +68,7 @@ install: $(GOFILES)
 build: $(EXECUTABLE)
 
 $(EXECUTABLE): $(GOFILES)
-	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(GOLDFLAGS)' -o bin/$@
+	C_INCLUDE_PATH=${INCLUDE_PATH} LIBRARY_PATH=${LIBRARY_PATH} $(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(GOLDFLAGS)' -o bin/$@
 
 clean:
 	$(GO) clean -x -i ./...
