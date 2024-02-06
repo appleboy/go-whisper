@@ -66,19 +66,9 @@ func (e *Engine) Transcript() error {
 	}
 	defer os.RemoveAll(dir)
 
-	ext := filepath.Ext(e.cfg.AudioPath)
-	cutSilencesPath := filepath.Join(dir, "cut_silences"+ext)
 	convertedPath := filepath.Join(dir, "converted.wav")
 	sourcePath := e.cfg.AudioPath
 	outputPath := ""
-
-	if e.cfg.CutSilences {
-		log.Debug().Msg("start cut silences from audio")
-		if err := cutSilences(sourcePath, cutSilencesPath); err != nil {
-			return err
-		}
-		sourcePath = cutSilencesPath
-	}
 
 	log.Debug().Msg("start convert audio to wav")
 	if err := audioToWav(sourcePath, convertedPath); err != nil {

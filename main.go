@@ -159,11 +159,6 @@ func main() {
 			Usage:   "initial prompt",
 			EnvVars: []string{"PLUGIN_PROMPT", "INPUT_PROMPT"},
 		},
-		// &cli.BoolFlag{
-		// 	Name:    "cut-silences",
-		// 	Usage:   "cut silences",
-		// 	EnvVars: []string{"PLUGIN_CUT_SILENCES", "INPUT_CUT_SILENCES"},
-		// },
 		&cli.UintFlag{
 			Name:    "max-context",
 			Usage:   "maximum number of text context tokens to store",
@@ -206,7 +201,6 @@ func run(c *cli.Context) error {
 
 			PrintProgress: c.Bool("print-progress"),
 			PrintSegment:  c.Bool("print-segment"),
-			CutSilences:   c.Bool("cut-silences"),
 
 			OutputFolder:   c.String("output-folder"),
 			OutputFilename: c.String("output-filename"),
