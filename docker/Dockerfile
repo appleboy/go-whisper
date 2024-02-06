@@ -17,11 +17,11 @@ ENV WHISPER_CUBLAS=1
 
 #apt-get
 RUN apt-get update && \
-    apt-get install -y build-essential git gcc g++ wget\
+    apt-get install -y --no-install-recommends build-essential git gcc g++ wget \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # install golang
-RUN wget https://go.dev/dl/go1.21.6.linux-amd64.tar.gz
+RUN wget --progress=dot:giga https://go.dev/dl/go1.21.6.linux-amd64.tar.gz
 RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz
 ENV PATH ${PATH}:/usr/local/go/bin
 
@@ -47,7 +47,7 @@ LABEL org.opencontainers.image.description="Speech-to-Text."
 LABEL org.opencontainers.image.licenses=MIT
 
 RUN apt-get update && \
-  apt-get install -y curl ffmpeg \
+  apt-get install -y --no-install-recommends curl ffmpeg \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 COPY --from=build /bin/go-whisper /bin/go-whisper
