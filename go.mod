@@ -9,7 +9,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kkdai/youtube/v2 v2.9.0
 	github.com/mattn/go-isatty v0.0.20
-	github.com/rs/zerolog v1.31.0
+	github.com/rs/zerolog v1.32.0
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/net v0.20.0
 )
