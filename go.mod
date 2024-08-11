@@ -9,16 +9,16 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kkdai/youtube/v2 v2.9.0
 	github.com/mattn/go-isatty v0.0.20
-	github.com/rs/zerolog v1.32.0
-	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/net v0.20.0
+	github.com/rs/zerolog v1.33.0
+	github.com/urfave/cli/v2 v2.27.3
+	golang.org/x/net v0.28.0
 )
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/dlclark/regexp2 v1.10.0 // indirect
 	github.com/dop251/goja v0.0.0-20231027120936-b396bb4c349d // indirect
 	github.com/go-audio/audio v1.0.0 // indirect
@@ -30,9 +30,9 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/vbauerster/mpb/v5 v5.4.0 // indirect
-	github.com/xrash/smetrics v0.0.0-20231213231151-1d8dd44e695e // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 )
 
 replace github.com/ggerganov/whisper.cpp/bindings/go => github.com/appleboy/whisper.cpp/bindings/go v0.0.0-20240124072204-1dd0f53753ab
