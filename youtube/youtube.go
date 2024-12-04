@@ -102,14 +102,14 @@ func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string,
 	switch {
 	case itag > 0:
 		// When an itag is specified, do not filter format with mime-type
-		format = e.video.Formats.FindByItag(itag)
-		if format == nil {
+		formats = e.video.Formats.Itag(itag)
+		if len(formats) == 0 {
 			return "", fmt.Errorf("unable to find format with itag %d", itag)
 		}
 
 	case outputQuality != "":
-		format = formats.FindByQuality(outputQuality)
-		if format == nil {
+		formats = formats.Quality(outputQuality)
+		if len(formats) == 0 {
 			return "", fmt.Errorf("unable to find format with quality %s", outputQuality)
 		}
 
