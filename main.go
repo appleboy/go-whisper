@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"os"
 	"runtime"
 	"strconv"
@@ -235,7 +234,7 @@ func run(c *cli.Context) error {
 		return err
 	}
 	if yt != nil && cfg.Youtube.URL != "" {
-		videoPath, err := yt.Download(context.Background())
+		videoPath, err := yt.Download(c.Context)
 		if err != nil {
 			return err
 		}
