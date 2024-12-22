@@ -86,8 +86,8 @@ func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string,
 		panic(err)
 	}
 
-	mimetype := "audio/webm"
-	outputQuality := ""
+	mimetype := "audio/mp4"
+	outputQuality := "tiny"
 
 	formats := e.video.Formats
 	if mimetype != "" {
@@ -119,7 +119,7 @@ func (e *Engine) download(ctx context.Context, trans http.RoundTripper) (string,
 		format = &formats[0]
 	}
 
-	outputFile := path.Join(folder, "video.webm")
+	outputFile := path.Join(folder, "video.mp4")
 
 	if err := downloader.Download(ctx, e.video, format, outputFile); err != nil {
 		return "", err
