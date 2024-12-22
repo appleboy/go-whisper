@@ -37,7 +37,7 @@ jobs:
 
       - name: setup tool
         run: |
-          apk add make git gcc g++
+          apk add bash make git gcc g++
 
       - name: testing
         run: |
