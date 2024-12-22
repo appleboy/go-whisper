@@ -17,12 +17,12 @@ ENV WHISPER_CUBLAS=1
 
 #apt-get
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential git gcc g++ wget \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+  apt-get install -y --no-install-recommends build-essential git gcc g++ wget \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # install golang
-RUN wget --progress=dot:giga https://go.dev/dl/go1.21.6.linux-amd64.tar.gz
-RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.6.linux-amd64.tar.gz
+RUN wget --progress=dot:giga https://go.dev/dl/go1.22.10.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.10.linux-amd64.tar.gz
 ENV PATH ${PATH}:/usr/local/go/bin
 
 # Ref: https://stackoverflow.com/a/53464012
@@ -31,8 +31,8 @@ ENV LD_LIBRARY_PATH /usr/local/cuda-${CUDA_MAIN_VERSION}/compat:$LD_LIBRARY_PATH
 
 COPY ./ .
 RUN make dependency && env && make build && \
-    mv bin/go-whisper /bin/ && \
-    rm -rf bin 
+  mv bin/go-whisper /bin/ && \
+  rm -rf bin 
 
 FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION} AS runtime
 WORKDIR /app
