@@ -1,13 +1,13 @@
 module github.com/appleboy/go-whisper
 
-go 1.22
+go 1.22.0
 
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/ggerganov/whisper.cpp/bindings/go v0.0.0-20230606002726-57543c169e27
 	github.com/go-audio/wav v1.1.0
 	github.com/joho/godotenv v1.5.1
-	github.com/kkdai/youtube/v2 v2.10.1
+	github.com/kkdai/youtube/v2 v2.10.2
 	github.com/mattn/go-isatty v0.0.20
 	github.com/rs/zerolog v1.33.0
 	github.com/urfave/cli/v2 v2.27.5
